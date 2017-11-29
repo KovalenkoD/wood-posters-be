@@ -3,7 +3,6 @@ package com.woodposters.service.product;
 import com.woodposters.entity.product.BundleProduct;
 import com.woodposters.entity.product.Product;
 import com.woodposters.entity.product.ProductName;
-import com.woodposters.repository.ProductNameRepository;
 import com.woodposters.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
