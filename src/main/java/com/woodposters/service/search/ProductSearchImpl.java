@@ -3,6 +3,7 @@ package com.woodposters.service.search;
 import com.woodposters.entity.product.Product;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.PhraseTermination;
 import org.hibernate.search.query.dsl.QueryBuilder;
@@ -19,13 +20,6 @@ import java.util.List;
 public class ProductSearchImpl implements  ProductSearch {
     @Autowired
     private EntityManager entityManager;
-
-  /* @Autowired
-    public ProductSearchImpl(EntityManager entityManager) {
-        super();
-        this.entityManager = entityManager;
-    }
-*/
 
     @PostConstruct
     public void initializeHibernateSearch() {
@@ -47,7 +41,7 @@ public class ProductSearchImpl implements  ProductSearch {
 
         PhraseTermination phraseTermination = queryBuilder.phrase().onField("type").andField("productNames.name").sentence(searchTerm);
         Query luceneQuery = phraseTermination.createQuery();
-        javax.persistence.Query jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Product.class);
+        FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Product.class);
 
         // execute search
 

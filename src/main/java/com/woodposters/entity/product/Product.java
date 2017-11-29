@@ -1,6 +1,7 @@
 package com.woodposters.entity.product;
 
 
+import com.woodposters.entity.category.Category;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.ngram.NGramFilterFactory;
 import org.apache.lucene.analysis.ru.RussianLightStemFilterFactory;
@@ -11,6 +12,7 @@ import org.hibernate.search.annotations.Parameter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -55,13 +57,22 @@ public class Product implements Serializable {
     @IndexedEmbedded
     private Set<ProductName> productNames;
 
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "product_category",
+            joinColumns = {@JoinColumn(name = "product_id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id")}
+    )
+    Set<Category> categories;
+
     public Product(){}
 
-    public Product(double price, String type, short status, Set<ProductName> productNames) {
+    public Product(double price, String type, short status, Set<ProductName> productNames, Set<Category> categories) {
         this.price = price;
         this.type = type;
         this.status = status;
         this.productNames = productNames;
+        this.categories = categories;
     }
 
     public long getId() {
@@ -102,5 +113,13 @@ public class Product implements Serializable {
 
     public void setStatus(short status) {
         this.status = status;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }

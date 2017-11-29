@@ -15,6 +15,16 @@ INSERT INTO `users` (`username`, `password`, `full_name`, `role`, `country`, `en
 	('dmko1114', '$2a$10$AOQcLk9T6vahNuhwf.21YOVKjgIUQ3z9tgtKUYWdV6eejTNW5e1da', 'Dmitry Kovalenko2', 'ROLE_USER', 'Ukraine', 1);
 
 
+
+
+
+
+
+
+
+
+
+
 CREATE TABLE IF NOT EXISTS `product` (
   `product_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `price` decimal(10,0) NOT NULL,
@@ -33,5 +43,29 @@ CREATE TABLE IF NOT EXISTS `product_name` (
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`),
   CONSTRAINT `product_name_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `category` (
+  `category_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `category_name` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int(11) unsigned NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `locale` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `category_name_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `product_category` (
+ `product_id` int(11) unsigned NOT NULL,
+ `category_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`product_id`,`category_id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `product_category_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
+  CONSTRAINT `product_category_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 

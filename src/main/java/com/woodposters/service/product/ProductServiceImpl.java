@@ -1,8 +1,11 @@
 package com.woodposters.service.product;
 
+import com.woodposters.entity.category.Category;
+import com.woodposters.entity.category.CategoryName;
 import com.woodposters.entity.product.BundleProduct;
 import com.woodposters.entity.product.Product;
 import com.woodposters.entity.product.ProductName;
+import com.woodposters.repository.CategoryRepository;
 import com.woodposters.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,10 @@ import java.util.*;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -29,21 +35,32 @@ public class ProductServiceImpl implements ProductService {
         return new ArrayList<>();
     }
 
+    private Category createCategory(){
+        Category category = new Category();
+        CategoryName productNameEN = new CategoryName("humor", "en", category);
+        CategoryName productNameRU = new CategoryName("Юмор", "ru", category);
+        category.setCategoryNames(new HashSet<>(Arrays.asList(productNameEN, productNameRU)));
+        categoryRepository.save(category);
+        return category;
+    }
 
     @Override
     public void addProducts() {
+        Category category = createCategory();
         Product product1 = new Product();
         product1.setPrice(250);
         product1.setType("comedy");
         ProductName productNameTed = new ProductName("sdasdasd", "en", product1);
         product1.setProductNames(new HashSet<>(Arrays.asList(productNameTed)));
+        product1.setCategories(new HashSet<>(Arrays.asList(category)));
         productRepository.save(product1);
-        Product product2 = new Product();
 
+        Product product2 = new Product();
         product2.setPrice(250);
         product2.setType("comedy");
         ProductName productNameHonus = new ProductName("Honus", "ua", product2);
         product2.setProductNames(new HashSet<>(Arrays.asList(productNameHonus, productNameTed)));
+        product2.setCategories(new HashSet<>(Arrays.asList(category)));
         productRepository.save(product2);
 
         BundleProduct bundleProduct = new BundleProduct();
@@ -53,6 +70,7 @@ public class ProductServiceImpl implements ProductService {
         ProductName productNameBundle= new ProductName("Супер Бандл", "ru", bundleProduct);
         ProductName productNameBundle2= new ProductName("Super Bundle", "EN", bundleProduct);
         bundleProduct.setProductNames(new HashSet<>(Arrays.asList(productNameBundle, productNameBundle2)));
+        bundleProduct.setCategories(new HashSet<>(Arrays.asList(category)));
         productRepository.save(bundleProduct);
 
         BundleProduct bundleProduct2 = new BundleProduct();
@@ -62,6 +80,7 @@ public class ProductServiceImpl implements ProductService {
         ProductName productNameBundle4= new ProductName("Супер Бандл 2", "ru", bundleProduct2);
         ProductName productNameBundle5= new ProductName("Super Bundle 2", "EN", bundleProduct2);
         bundleProduct2.setProductNames(new HashSet<>(Arrays.asList(productNameBundle4, productNameBundle5)));
+        bundleProduct2.setCategories(new HashSet<>(Arrays.asList(category)));
         productRepository.save(bundleProduct2);
 
     }

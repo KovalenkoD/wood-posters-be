@@ -1,5 +1,6 @@
 package com.woodposters.entity.product;
 
+import com.woodposters.entity.category.Category;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.Column;
@@ -30,8 +31,8 @@ public class BundleProduct extends Product {
         this.bundleImage = bundleImage;
     }
 
-    public BundleProduct(double price, String type, short status, Set<ProductName> productNames, String bundleImage) {
-        super(price, type, status, productNames);
+    public BundleProduct(double price, String type, short status, Set<ProductName> productNames, String bundleImage, Set<Category> categories) {
+        super(price, type, status, productNames, categories);
         this.bundleImage = bundleImage;
     }
 }
