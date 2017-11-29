@@ -1,4 +1,4 @@
-package com.concretepage.entity;
+package com.woodposters.entity;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
 @Table(name="users")
-public class UserInfo implements Serializable {
+public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name="username")

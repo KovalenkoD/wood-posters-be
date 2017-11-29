@@ -1,4 +1,4 @@
-package com.concretepage.config;
+package com.woodposters.config;
 
 import java.io.IOException;
 

@@ -1,21 +1,5 @@
-https://www.concretepage.com/spring-boot/spring-boot-security-rest-jpa-hibernate-mysql-crud-example
-
-
-CREATE DATABASE IF NOT EXISTS `concretepage` ;
-USE `concretepage`;
--- Dumping structure for table concretepage.articles
-CREATE TABLE IF NOT EXISTS `articles` (
-  `article_id` int(5) NOT NULL AUTO_INCREMENT,
-  `title` varchar(200) NOT NULL,
-  `category` varchar(100) NOT NULL,
-  PRIMARY KEY (`article_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
--- Dumping data for table concretepage.articles: ~3 rows (approximately)
-INSERT INTO `articles` (`article_id`, `title`, `category`) VALUES
-	(1, 'Java Concurrency', 'Java'),
-	(2, 'Hibernate HQL ', 'Hibernate'),
-	(3, 'Spring MVC with Hibernate', 'Spring');
--- Dumping structure for table concretepage.users
+CREATE DATABASE IF NOT EXISTS `woodposters` ;
+USE `woodposters`;
 CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(50) NOT NULL,
   `password` varchar(100) NOT NULL,
@@ -25,7 +9,29 @@ CREATE TABLE IF NOT EXISTS `users` (
   `enabled` tinyint(1) NOT NULL,
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
--- Dumping data for table concretepage.users: ~2 rows (approximately)
+
 INSERT INTO `users` (`username`, `password`, `full_name`, `role`, `country`, `enabled`) VALUES
-	('mukesh', '$2a$10$N0eqNiuikWCy9ETQ1rdau.XEELcyEO7kukkfoiNISk/9F7gw6eB0W', 'Mukesh Sharma', 'ROLE_ADMIN', 'India', 1),
-	('tarun', '$2a$10$QifQnP.XqXDW0Lc4hSqEg.GhTqZHoN2Y52/hoWr4I5ePxK7D2Pi8q', 'Tarun Singh', 'ROLE_USER', 'India', 1);
+	('dmko1113', '$2a$10$AOQcLk9T6vahNuhwf.21YOVKjgIUQ3z9tgtKUYWdV6eejTNW5e1da', 'Dmitry Kovalenko', 'ROLE_ADMIN', 'Ukraine', 1),
+	('dmko1114', '$2a$10$AOQcLk9T6vahNuhwf.21YOVKjgIUQ3z9tgtKUYWdV6eejTNW5e1da', 'Dmitry Kovalenko2', 'ROLE_USER', 'Ukraine', 1);
+
+
+CREATE TABLE IF NOT EXISTS `product` (
+  `product_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `price` decimal(10,0) NOT NULL,
+  `type` VARCHAR(10) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1 NOT NULL,
+  `bundle_image` VARCHAR(20) DEFAULT NULL,
+  `discriminator` VARCHAR(2) NOT NULL,
+  PRIMARY KEY (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `product_name` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) unsigned NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `locale` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `product_name_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
