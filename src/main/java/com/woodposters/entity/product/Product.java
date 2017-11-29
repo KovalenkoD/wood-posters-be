@@ -2,6 +2,7 @@ package com.woodposters.entity.product;
 
 
 import com.woodposters.entity.category.Category;
+import com.woodposters.entity.productType.ProductType;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.ngram.NGramFilterFactory;
 import org.apache.lucene.analysis.ru.RussianLightStemFilterFactory;
@@ -65,14 +66,23 @@ public class Product implements Serializable {
     )
     Set<Category> categories;
 
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "product_type_mapping",
+            joinColumns = {@JoinColumn(name = "product_id")},
+            inverseJoinColumns = {@JoinColumn(name = "product_type_id")}
+    )
+    Set<ProductType> productTypes;
+
     public Product(){}
 
-    public Product(double price, String type, short status, Set<ProductName> productNames, Set<Category> categories) {
+    public Product(double price, String type, short status, Set<ProductName> productNames, Set<Category> categories, Set<ProductType> productTypes) {
         this.price = price;
         this.type = type;
         this.status = status;
         this.productNames = productNames;
         this.categories = categories;
+        this.productTypes = productTypes;
     }
 
     public long getId() {
@@ -121,5 +131,13 @@ public class Product implements Serializable {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    public Set<ProductType> getProductTypes() {
+        return productTypes;
+    }
+
+    public void setProductTypes(Set<ProductType> productTypes) {
+        this.productTypes = productTypes;
     }
 }
