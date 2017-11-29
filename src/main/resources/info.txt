@@ -45,6 +45,16 @@ CREATE TABLE IF NOT EXISTS `product_name` (
   CONSTRAINT `product_name_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `product_description` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) unsigned NOT NULL,
+  `description` varchar(90) NOT NULL,
+  `locale` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `product_description_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `category` (
   `category_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`category_id`)

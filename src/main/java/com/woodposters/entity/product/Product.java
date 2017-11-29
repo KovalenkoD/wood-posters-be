@@ -58,6 +58,10 @@ public class Product implements Serializable {
     @IndexedEmbedded
     private Set<ProductName> productNames;
 
+    @OneToMany(mappedBy="product")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private Set<ProductDescription> productDescriptions;
+
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "product_category",
@@ -76,13 +80,14 @@ public class Product implements Serializable {
 
     public Product(){}
 
-    public Product(double price, String type, short status, Set<ProductName> productNames, Set<Category> categories, Set<ProductType> productTypes) {
+    public Product(double price, String type, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, Set<Category> categories, Set<ProductType> productTypes) {
         this.price = price;
         this.type = type;
         this.status = status;
         this.productNames = productNames;
         this.categories = categories;
         this.productTypes = productTypes;
+        this.productDescriptions = productDescriptions;
     }
 
     public long getId() {
@@ -139,5 +144,13 @@ public class Product implements Serializable {
 
     public void setProductTypes(Set<ProductType> productTypes) {
         this.productTypes = productTypes;
+    }
+
+    public Set<ProductDescription> getProductDescriptions() {
+        return productDescriptions;
+    }
+
+    public void setProductDescriptions(Set<ProductDescription> productDescriptions) {
+        this.productDescriptions = productDescriptions;
     }
 }
