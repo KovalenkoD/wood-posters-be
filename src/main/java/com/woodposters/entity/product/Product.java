@@ -3,6 +3,7 @@ package com.woodposters.entity.product;
 
 import com.woodposters.entity.category.Category;
 import com.woodposters.entity.productType.ProductType;
+import com.woodposters.entity.technology.Technology;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.ngram.NGramFilterFactory;
 import org.apache.lucene.analysis.ru.RussianLightStemFilterFactory;
@@ -50,6 +51,9 @@ public class Product implements Serializable {
     @Field(analyzer=@Analyzer(definition="treewords"))
     private String type;
 
+    @Column(name="size")
+    private String size;
+
     @Column(name="status")
     private short status;
 
@@ -68,7 +72,7 @@ public class Product implements Serializable {
             joinColumns = {@JoinColumn(name = "product_id")},
             inverseJoinColumns = {@JoinColumn(name = "category_id")}
     )
-    Set<Category> categories;
+    private Set<Category> categories;
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
@@ -78,9 +82,17 @@ public class Product implements Serializable {
     )
     Set<ProductType> productTypes;
 
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "product_technology",
+            joinColumns = {@JoinColumn(name = "product_id")},
+            inverseJoinColumns = {@JoinColumn(name = "technology_id")}
+    )
+    private Set<Technology> technologies;
+
     public Product(){}
 
-    public Product(double price, String type, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, Set<Category> categories, Set<ProductType> productTypes) {
+    public Product(double price, String type, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, Set<Category> categories, Set<ProductType> productTypes, Set<Technology> technologies) {
         this.price = price;
         this.type = type;
         this.status = status;
@@ -88,6 +100,8 @@ public class Product implements Serializable {
         this.categories = categories;
         this.productTypes = productTypes;
         this.productDescriptions = productDescriptions;
+        this.size = size;
+        this.technologies = technologies;
     }
 
     public long getId() {
@@ -152,5 +166,21 @@ public class Product implements Serializable {
 
     public void setProductDescriptions(Set<ProductDescription> productDescriptions) {
         this.productDescriptions = productDescriptions;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public Set<Technology> getTechnologies() {
+        return technologies;
+    }
+
+    public void setTechnologies(Set<Technology> technologies) {
+        this.technologies = technologies;
     }
 }

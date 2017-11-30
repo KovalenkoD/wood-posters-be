@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `product_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `price` decimal(10,0) NOT NULL,
   `type` VARCHAR(10) DEFAULT NULL,
+  `size` VARCHAR(20) DEFAULT NULL,
   `status` tinyint(1) DEFAULT 1 NOT NULL,
   `bundle_image` VARCHAR(20) DEFAULT NULL,
   `discriminator` VARCHAR(2) NOT NULL,
@@ -104,4 +105,28 @@ CREATE TABLE IF NOT EXISTS `product_type_mapping` (
   CONSTRAINT `product_type_mapping_ibfk_2` FOREIGN KEY (`product_type_id`) REFERENCES `product_type` (`product_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE IF NOT EXISTS `technology` (
+  `technology_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`technology_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `technology_name` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `technology_id` int(11) unsigned NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `locale` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `technology_id` (`technology_id`),
+  CONSTRAINT `technology_name_ibfk_1` FOREIGN KEY (`technology_id`) REFERENCES `technology` (`technology_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `product_technology` (
+ `product_id` int(11) unsigned NOT NULL,
+ `technology_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`product_id`,`technology_id`),
+  KEY `technology_id` (`technology_id`),
+  CONSTRAINT `product_technology_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
+  CONSTRAINT `product_technology_ibfk_2` FOREIGN KEY (`technology_id`) REFERENCES `technology` (`technology_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 

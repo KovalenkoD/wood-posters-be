@@ -8,9 +8,12 @@ import com.woodposters.entity.product.ProductDescription;
 import com.woodposters.entity.product.ProductName;
 import com.woodposters.entity.productType.ProductType;
 import com.woodposters.entity.productType.ProductTypeName;
+import com.woodposters.entity.technology.Technology;
+import com.woodposters.entity.technology.TechnologyName;
 import com.woodposters.repository.CategoryRepository;
 import com.woodposters.repository.ProductRepository;
 import com.woodposters.repository.ProductTypeRepository;
+import com.woodposters.repository.TechnologyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +34,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductTypeRepository productTypeRepository;
+
+    @Autowired
+    private TechnologyRepository technologyRepository;
+
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -60,13 +67,33 @@ public class ProductServiceImpl implements ProductService {
         return productType;
     }
 
+    private Set<Technology> createTechnologies(){
+        Technology technology = new Technology();
+        TechnologyName technologyEN = new TechnologyName("dekypaj", "en", technology);
+        TechnologyName technologyRU = new TechnologyName("Декупаж", "ru", technology);
+        technology.setTechnologyNames(new HashSet<>(Arrays.asList(technologyEN, technologyRU)));
+        technologyRepository.save(technology);
+
+        Technology technology2 = new Technology();
+        TechnologyName technology2EN = new TechnologyName("old", "en", technology2);
+        TechnologyName technology2RU = new TechnologyName("Состаривание", "ru", technology2);
+        technology2.setTechnologyNames(new HashSet<>(Arrays.asList(technology2EN, technology2RU)));
+        technologyRepository.save(technology2);
+
+        Set<Technology> technologies = new HashSet<>(Arrays.asList(technology, technology2));
+        return technologies;
+    }
+
     @Override
     public void addProducts() {
         Category category = createCategory();
+        Set<Technology> technologies = createTechnologies();
         ProductType productType = createType();
         Product product1 = new Product();
         product1.setPrice(250);
         product1.setType("comedy");
+        product1.setSize("145 x 145 x 70");
+        product1.setTechnologies(technologies);
         ProductName productNameTed = new ProductName("sdasdasd", "en", product1);
         product1.setProductNames(new HashSet<>(Arrays.asList(productNameTed)));
         ProductDescription productDescription = new ProductDescription("Some description Informatoim", "en", product1);
@@ -78,6 +105,8 @@ public class ProductServiceImpl implements ProductService {
         Product product2 = new Product();
         product2.setPrice(250);
         product2.setType("comedy");
+        product2.setSize("145 x 145 x 70");
+        product2.setTechnologies(technologies);
         ProductName productNameHonus = new ProductName("Honus", "ua", product2);
         product2.setProductNames(new HashSet<>(Arrays.asList(productNameHonus, productNameTed)));
         ProductDescription productDescription2 = new ProductDescription("Some description Informatoim", "en", product2);
@@ -91,6 +120,8 @@ public class ProductServiceImpl implements ProductService {
         bundleProduct.setPrice(250);
         bundleProduct.setType("юмор");
         bundleProduct.setBundleImage("testImage");
+        bundleProduct.setSize("145 x 145 x 70");
+        bundleProduct.setTechnologies(technologies);
         ProductName productNameBundle= new ProductName("Супер Бандл", "ru", bundleProduct);
         ProductName productNameBundle2= new ProductName("Super Bundle", "EN", bundleProduct);
         bundleProduct.setProductNames(new HashSet<>(Arrays.asList(productNameBundle, productNameBundle2)));
@@ -103,7 +134,9 @@ public class ProductServiceImpl implements ProductService {
         BundleProduct bundleProduct2 = new BundleProduct();
         bundleProduct2.setPrice(250);
         bundleProduct2.setType("юмор");
+        bundleProduct2.setSize("145 x 145 x 70");
         bundleProduct2.setBundleImage("testImage2");
+        bundleProduct2.setTechnologies(technologies);
         ProductName productNameBundle4= new ProductName("Супер Бандл 2", "ru", bundleProduct2);
         ProductName productNameBundle5= new ProductName("Super Bundle 2", "EN", bundleProduct2);
         bundleProduct2.setProductNames(new HashSet<>(Arrays.asList(productNameBundle4, productNameBundle5)));
