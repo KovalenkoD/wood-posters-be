@@ -28,7 +28,6 @@ INSERT INTO `users` (`username`, `password`, `full_name`, `role`, `country`, `en
 CREATE TABLE IF NOT EXISTS `product` (
   `product_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `price` decimal(10,0) NOT NULL,
-  `type` VARCHAR(10) DEFAULT NULL,
   `size` VARCHAR(20) DEFAULT NULL,
   `status` tinyint(1) DEFAULT 1 NOT NULL,
   `bundle_image` VARCHAR(20) DEFAULT NULL,

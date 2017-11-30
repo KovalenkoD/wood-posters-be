@@ -1,5 +1,6 @@
 package com.woodposters.controller;
 
+import com.woodposters.beans.WizardState;
 import com.woodposters.entity.product.Product;
 import com.woodposters.service.product.ProductService;
 import com.woodposters.service.search.ProductSearch;
@@ -20,6 +21,9 @@ public class ProductsController {
 
     @Autowired
     private ProductSearch productSearch;
+
+    @Autowired
+    private WizardState wizardState;
 
     @GetMapping("getAllProducts")
     public ResponseEntity<List<Product>> getAllProducts() {
@@ -51,7 +55,7 @@ public class ProductsController {
         List<Product> searchResults = null;
         try {
             searchResults = productSearch.fullSearch(search);
-
+            System.out.println(wizardState.getLocale());
         } catch (Exception ex) {
             System.out.println(ex);
         }

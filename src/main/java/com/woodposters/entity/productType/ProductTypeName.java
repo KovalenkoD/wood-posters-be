@@ -1,6 +1,7 @@
 package com.woodposters.entity.productType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.woodposters.beans.Locale;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +18,8 @@ public class ProductTypeName implements Serializable {
     private String name;
 
     @Column(name="locale")
-    private String locale;
+    @Enumerated(EnumType.STRING)
+    private Locale locale;
 
     @ManyToOne
     @JoinColumn(name="product_type_id", nullable=false)
@@ -26,7 +28,7 @@ public class ProductTypeName implements Serializable {
 
     public ProductTypeName(){}
 
-    public ProductTypeName(String name, String locale, ProductType productType){
+    public ProductTypeName(String name, Locale locale, ProductType productType){
         this.name=name;
         this.locale=locale;
         this.productType = productType;
@@ -48,11 +50,11 @@ public class ProductTypeName implements Serializable {
         this.name = name;
     }
 
-    public String getLocale() {
+    public Locale getLocale() {
         return locale;
     }
 
-    public void setLocale(String locale) {
+    public void setLocale(Locale locale) {
         this.locale = locale;
     }
 

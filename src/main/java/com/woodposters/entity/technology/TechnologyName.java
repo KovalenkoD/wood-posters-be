@@ -1,6 +1,7 @@
 package com.woodposters.entity.technology;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.woodposters.beans.Locale;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +18,8 @@ public class TechnologyName implements Serializable {
     private String name;
 
     @Column(name="locale")
-    private String locale;
+    @Enumerated(EnumType.STRING)
+    private Locale locale;
 
     @ManyToOne
     @JoinColumn(name="technology_id", nullable=false)
@@ -26,7 +28,7 @@ public class TechnologyName implements Serializable {
 
     public TechnologyName(){}
 
-    public TechnologyName(String name, String locale, Technology technology){
+    public TechnologyName(String name, Locale locale, Technology technology){
         this.name=name;
         this.locale=locale;
         this.technology = technology;
@@ -48,11 +50,11 @@ public class TechnologyName implements Serializable {
         this.name = name;
     }
 
-    public String getLocale() {
+    public Locale getLocale() {
         return locale;
     }
 
-    public void setLocale(String locale) {
+    public void setLocale(Locale locale) {
         this.locale = locale;
     }
 

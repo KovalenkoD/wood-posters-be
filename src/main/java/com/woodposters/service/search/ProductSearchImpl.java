@@ -39,7 +39,7 @@ public class ProductSearchImpl implements  ProductSearch {
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Product.class).get();
 
-        PhraseTermination phraseTermination = queryBuilder.phrase().onField("type").andField("productNames.name").sentence(searchTerm);
+        PhraseTermination phraseTermination = queryBuilder.phrase().onField("productNames.name").sentence(searchTerm);
         Query luceneQuery = phraseTermination.createQuery();
         FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Product.class);
 

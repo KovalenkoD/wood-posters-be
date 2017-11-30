@@ -1,6 +1,7 @@
 package com.woodposters.entity.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.woodposters.beans.Locale;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.ngram.NGramFilterFactory;
 import org.apache.lucene.analysis.ru.RussianLightStemFilterFactory;
@@ -35,7 +36,8 @@ public class ProductName implements Serializable {
     private String name;
 
     @Column(name="locale")
-    private String locale;
+    @Enumerated(EnumType.STRING)
+    private Locale locale;
 
     @ManyToOne
     @JoinColumn(name="product_id", nullable=false)
@@ -44,7 +46,7 @@ public class ProductName implements Serializable {
 
     public ProductName(){}
 
-    public ProductName(String name, String locale, Product product){
+    public ProductName(String name, Locale locale, Product product){
         this.name=name;
         this.locale=locale;
         this.product=product;
@@ -66,11 +68,11 @@ public class ProductName implements Serializable {
         this.name = name;
     }
 
-    public String getLocale() {
+    public Locale getLocale() {
         return locale;
     }
 
-    public void setLocale(String locale) {
+    public void setLocale(Locale locale) {
         this.locale = locale;
     }
 

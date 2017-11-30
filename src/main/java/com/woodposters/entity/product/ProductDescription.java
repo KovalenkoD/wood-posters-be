@@ -1,6 +1,7 @@
 package com.woodposters.entity.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.woodposters.beans.Locale;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 
@@ -19,7 +20,8 @@ public class ProductDescription implements Serializable {
     private String description;
 
     @Column(name = "locale")
-    private String locale;
+    @Enumerated(EnumType.STRING)
+    private Locale locale;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
@@ -28,7 +30,7 @@ public class ProductDescription implements Serializable {
 
     public ProductDescription(){};
 
-    public ProductDescription(String description, String locale, Product product) {
+    public ProductDescription(String description, Locale locale, Product product) {
         this.description = description;
         this.locale = locale;
         this.product = product;
@@ -42,11 +44,11 @@ public class ProductDescription implements Serializable {
         this.id = id;
     }
 
-    public String getLocale() {
+    public Locale getLocale() {
         return locale;
     }
 
-    public void setLocale(String locale) {
+    public void setLocale(Locale locale) {
         this.locale = locale;
     }
 

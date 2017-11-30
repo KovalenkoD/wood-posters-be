@@ -47,10 +47,6 @@ public class Product implements Serializable {
     @Column(name="price")
     private double price;
 
-    @Column(name="type")
-    @Field(analyzer=@Analyzer(definition="treewords"))
-    private String type;
-
     @Column(name="size")
     private String size;
 
@@ -92,9 +88,8 @@ public class Product implements Serializable {
 
     public Product(){}
 
-    public Product(double price, String type, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, Set<Category> categories, Set<ProductType> productTypes, Set<Technology> technologies) {
+    public Product(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, Set<Category> categories, Set<ProductType> productTypes, Set<Technology> technologies) {
         this.price = price;
-        this.type = type;
         this.status = status;
         this.productNames = productNames;
         this.categories = categories;
@@ -118,14 +113,6 @@ public class Product implements Serializable {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public Set<ProductName> getProductNames() {
