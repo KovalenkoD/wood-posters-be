@@ -2,6 +2,7 @@ package com.woodposters.entity.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.woodposters.beans.Locale;
+import com.woodposters.entity.LocaleName;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.ngram.NGramFilterFactory;
 import org.apache.lucene.analysis.ru.RussianLightStemFilterFactory;
@@ -25,7 +26,7 @@ import java.io.Serializable;
                                 })
                 })
 })
-public class ProductName implements Serializable {
+public class ProductName implements LocaleName, Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")

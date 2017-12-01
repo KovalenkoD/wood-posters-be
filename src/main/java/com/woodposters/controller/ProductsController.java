@@ -1,6 +1,7 @@
 package com.woodposters.controller;
 
 import com.woodposters.beans.WizardState;
+import com.woodposters.converters.ProductConverter;
 import com.woodposters.entity.product.Product;
 import com.woodposters.service.product.ProductService;
 import com.woodposters.service.search.ProductSearch;
@@ -26,9 +27,10 @@ public class ProductsController {
     private WizardState wizardState;
 
     @GetMapping("getAllProducts")
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List> getAllProducts() {
         List<Product> products = productService.getAllProducts();
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        List result = ProductConverter.convert(products, wizardState.getLocale());
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("addProducts")
@@ -51,7 +53,7 @@ public class ProductsController {
 
 
     @GetMapping("searchProduct/{search}")
-    public ResponseEntity<List<Product>> getProductByFullSearchSearch(@PathVariable("search") String search) {
+    public ResponseEntity<List> getProductByFullSearchSearch(@PathVariable("search") String search) {
         List<Product> searchResults = null;
         try {
             searchResults = productSearch.fullSearch(search);
@@ -59,6 +61,7 @@ public class ProductsController {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        return new ResponseEntity<List<Product>>(searchResults, HttpStatus.OK);
+        List result = ProductConverter.convert(searchResults, wizardState.getLocale());
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 }

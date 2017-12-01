@@ -2,13 +2,14 @@ package com.woodposters.entity.technology;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.woodposters.beans.Locale;
+import com.woodposters.entity.LocaleName;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name="technology_name")
-public class TechnologyName implements Serializable {
+public class TechnologyName implements LocaleName, Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id")

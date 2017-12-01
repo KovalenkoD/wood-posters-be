@@ -2,6 +2,7 @@ package com.woodposters.entity.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.woodposters.beans.Locale;
+import com.woodposters.entity.LocaleDescription;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 
@@ -10,7 +11,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="product_description")
-public class ProductDescription implements Serializable {
+public class ProductDescription implements LocaleDescription, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
