@@ -129,3 +129,27 @@ CREATE TABLE IF NOT EXISTS `product_technology` (
   CONSTRAINT `product_technology_ibfk_2` FOREIGN KEY (`technology_id`) REFERENCES `technology` (`technology_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `material` (
+  `material_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`material_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `material_name` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `material_id` int(11) unsigned NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `locale` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `material_id` (`material_id`),
+  CONSTRAINT `material_name_ibfk_1` FOREIGN KEY (`material_id`) REFERENCES `material` (`material_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `product_material` (
+ `product_id` int(11) unsigned NOT NULL,
+ `material_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`product_id`,`material_id`),
+  KEY `material_id` (`material_id`),
+  CONSTRAINT `product_material_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
+  CONSTRAINT `product_material_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`material_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+

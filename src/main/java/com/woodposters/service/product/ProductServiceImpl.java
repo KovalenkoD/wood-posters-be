@@ -3,6 +3,8 @@ package com.woodposters.service.product;
 import com.woodposters.beans.Locale;
 import com.woodposters.entity.category.Category;
 import com.woodposters.entity.category.CategoryName;
+import com.woodposters.entity.material.Material;
+import com.woodposters.entity.material.MaterialName;
 import com.woodposters.entity.product.BundleProduct;
 import com.woodposters.entity.product.Product;
 import com.woodposters.entity.product.ProductDescription;
@@ -11,10 +13,7 @@ import com.woodposters.entity.productType.ProductType;
 import com.woodposters.entity.productType.ProductTypeName;
 import com.woodposters.entity.technology.Technology;
 import com.woodposters.entity.technology.TechnologyName;
-import com.woodposters.repository.CategoryRepository;
-import com.woodposters.repository.ProductRepository;
-import com.woodposters.repository.ProductTypeRepository;
-import com.woodposters.repository.TechnologyRepository;
+import com.woodposters.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +38,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private TechnologyRepository technologyRepository;
 
+    @Autowired
+    private MaterialRepository materialRepository;
+
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -60,13 +62,48 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductType createType(){
+        createType("Постеры", "Posters");
+        createType("Газетницы и журнальницы", "Newspapers and magazines");
+        createType("Шкатулки", "Caskets");
+        createType("Магниты на холодильник", "Fridge magnets");
+        createType("Вечные календари", "Perpetual Calendars");
+        createType("Конфетницы и спецовницы", "Candy and spelled girls");
+
+        ProductType productType = createType("Настенное пано", "Wall Panorama");
+
+        return productType;
+    }
+
+    private ProductType createType(String russianName, String englishName){
         ProductType productType = new ProductType();
-        ProductTypeName productNameEN = new ProductTypeName("Posters",  Locale.English, productType);
-        ProductTypeName productNameRU = new ProductTypeName("Постеры", Locale.Russian, productType);
+        ProductTypeName productNameEN = new ProductTypeName(englishName,  Locale.English, productType);
+        ProductTypeName productNameRU = new ProductTypeName(russianName, Locale.Russian, productType);
         productType.setProductTypeNames(new HashSet<>(Arrays.asList(productNameEN, productNameRU)));
         productTypeRepository.save(productType);
         return productType;
     }
+
+    private Set<Material> createMaterial(){
+        Set<Material> materials = new HashSet<Material>();
+        materials.add(createMaterial("МДФ", "MDF"));
+        materials.add(createMaterial("Дерево", "Tree"));
+        createMaterial("Дуб", "Oak");
+
+        Material material = createMaterial("Красное дерево", "Red tree");
+        materials.add(material);
+        return materials;
+    }
+
+    private Material createMaterial(String russianName, String englishName){
+        Material material = new Material();
+        MaterialName materialNameEN = new MaterialName(englishName,  Locale.English, material);
+        MaterialName materialNameRU = new MaterialName(russianName, Locale.Russian, material);
+        material.setMaterialNames(new HashSet<>(Arrays.asList(materialNameEN, materialNameRU)));
+        materialRepository.save(material);
+        return material;
+    }
+
+
 
     private Set<Technology> createTechnologies(){
         Technology technology = new Technology();
@@ -89,6 +126,7 @@ public class ProductServiceImpl implements ProductService {
     public void addProducts() {
         Category category = createCategory();
         Set<Technology> technologies = createTechnologies();
+        Set<Material> materials = createMaterial();
         ProductType productType = createType();
         Product product1 = new Product();
         product1.setPrice(250);
@@ -100,6 +138,8 @@ public class ProductServiceImpl implements ProductService {
         product1.setProductDescriptions(new HashSet<>(Arrays.asList(productDescription)));
         product1.setCategories(new HashSet<>(Arrays.asList(category)));
         product1.setProductTypes(new HashSet<>(Arrays.asList(productType)));
+        product1.setMaterials(materials);
+
         productRepository.save(product1);
 
         Product product2 = new Product();
@@ -112,6 +152,7 @@ public class ProductServiceImpl implements ProductService {
         product2.setProductDescriptions(new HashSet<>(Arrays.asList(productDescription2)));
         product2.setCategories(new HashSet<>(Arrays.asList(category)));
         product2.setProductTypes(new HashSet<>(Arrays.asList(productType)));
+        product2.setMaterials(materials);
 
         productRepository.save(product2);
 
@@ -127,6 +168,8 @@ public class ProductServiceImpl implements ProductService {
         bundleProduct.setProductDescriptions(new HashSet<>(Arrays.asList(productDescriptionBundle2)));
         bundleProduct.setCategories(new HashSet<>(Arrays.asList(category)));
         bundleProduct.setProductTypes(new HashSet<>(Arrays.asList(productType)));
+        bundleProduct.setMaterials(materials);
+
         productRepository.save(bundleProduct);
 
         BundleProduct bundleProduct2 = new BundleProduct();
@@ -141,6 +184,7 @@ public class ProductServiceImpl implements ProductService {
         bundleProduct2.setProductDescriptions(new HashSet<>(Arrays.asList(productDescriptionBundle4)));
         bundleProduct2.setCategories(new HashSet<>(Arrays.asList(category)));
         bundleProduct2.setProductTypes(new HashSet<>(Arrays.asList(productType)));
+        bundleProduct2.setMaterials(materials);
 
         productRepository.save(bundleProduct2);
 

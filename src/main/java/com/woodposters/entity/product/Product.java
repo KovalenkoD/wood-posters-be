@@ -2,6 +2,7 @@ package com.woodposters.entity.product;
 
 
 import com.woodposters.entity.category.Category;
+import com.woodposters.entity.material.Material;
 import com.woodposters.entity.productType.ProductType;
 import com.woodposters.entity.technology.Technology;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
@@ -86,9 +87,17 @@ public class Product implements Serializable {
     )
     private Set<Technology> technologies;
 
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "product_material",
+            joinColumns = {@JoinColumn(name = "product_id")},
+            inverseJoinColumns = {@JoinColumn(name = "material_id")}
+    )
+    private Set<Material> materials;
+
     public Product(){}
 
-    public Product(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, Set<Category> categories, Set<ProductType> productTypes, Set<Technology> technologies) {
+    public Product(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, Set<Category> categories, Set<ProductType> productTypes, Set<Technology> technologies, Set<Material> materials) {
         this.price = price;
         this.status = status;
         this.productNames = productNames;
@@ -97,6 +106,7 @@ public class Product implements Serializable {
         this.productDescriptions = productDescriptions;
         this.size = size;
         this.technologies = technologies;
+        this.materials = materials;
     }
 
     public long getId() {
@@ -169,5 +179,13 @@ public class Product implements Serializable {
 
     public void setTechnologies(Set<Technology> technologies) {
         this.technologies = technologies;
+    }
+
+    public Set<Material> getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(Set<Material> materials) {
+        this.materials = materials;
     }
 }

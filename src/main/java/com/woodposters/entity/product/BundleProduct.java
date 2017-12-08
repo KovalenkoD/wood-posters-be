@@ -1,6 +1,7 @@
 package com.woodposters.entity.product;
 
 import com.woodposters.entity.category.Category;
+import com.woodposters.entity.material.Material;
 import com.woodposters.entity.productType.ProductType;
 import com.woodposters.entity.technology.Technology;
 import org.hibernate.search.annotations.Indexed;
@@ -33,8 +34,8 @@ public class BundleProduct extends Product {
         this.bundleImage = bundleImage;
     }
 
-    public BundleProduct(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, String bundleImage, Set<Category> categories, Set<ProductType> productTypes, Set<Technology> technologies) {
-        super(price, size, status, productNames, productDescriptions, categories, productTypes, technologies);
+    public BundleProduct(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, String bundleImage, Set<Category> categories, Set<ProductType> productTypes, Set<Technology> technologies, Set<Material> materials) {
+        super(price, size, status, productNames, productDescriptions, categories, productTypes, technologies, materials);
         this.bundleImage = bundleImage;
     }
 }
