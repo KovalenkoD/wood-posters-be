@@ -2,7 +2,9 @@ package com.woodposters.controller;
 
 import com.woodposters.beans.WizardState;
 import com.woodposters.converters.ProductConverter;
+import com.woodposters.entity.category.Category;
 import com.woodposters.entity.product.Product;
+import com.woodposters.repository.ProductRepository;
 import com.woodposters.service.product.ProductService;
 import com.woodposters.service.search.ProductSearch;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("products")
@@ -22,6 +26,9 @@ public class ProductsController {
 
     @Autowired
     private ProductSearch productSearch;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private WizardState wizardState;
@@ -63,5 +70,12 @@ public class ProductsController {
         }
         List result = ProductConverter.convert(searchResults, wizardState.getLocale());
         return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @GetMapping("getProductById/{id}")
+    public ResponseEntity<Map> getProductsByCategory(@PathVariable("id") Long id) {
+        Product product = productRepository.findOne(id);
+        Map result = ProductConverter.convert(product, wizardState.getLocale());
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

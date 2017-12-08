@@ -133,7 +133,9 @@ public class ProductServiceImpl implements ProductService {
         product1.setSize("145 x 145 x 70");
         product1.setTechnologies(technologies);
         ProductName productNameTed = new ProductName("sdasdasd",  Locale.English, product1);
-        product1.setProductNames(new HashSet<>(Arrays.asList(productNameTed)));
+        ProductName productNameTed2 = new ProductName("Шкатулка Охуенная",  Locale.Russian, product1);
+
+        product1.setProductNames(new HashSet<>(Arrays.asList(productNameTed, productNameTed2)));
         ProductDescription productDescription = new ProductDescription("Some description Informatoim",  Locale.English, product1);
         product1.setProductDescriptions(new HashSet<>(Arrays.asList(productDescription)));
         product1.setCategories(new HashSet<>(Arrays.asList(category)));
