@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ProductTypeConverter  extends CommonConverter{
-
     public static Map<String, Object> convert(ProductType productType, Locale locale) {
         Map<String, Object> convertMap = new HashMap<>();
         convertMap.put("id", productType.getId());
         convertMap.put("name", getStringFromLocaleNameObjects(productType.getProductTypeNames(), locale));
+        convertMap.put("image", productType.getImage());
         return convertMap;
     }
 }

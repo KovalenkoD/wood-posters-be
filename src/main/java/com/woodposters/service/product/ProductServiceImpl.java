@@ -64,23 +64,24 @@ public class ProductServiceImpl implements ProductService {
 
     private List<ProductType> createType(){
         List<ProductType> productTypes = new ArrayList<>();
-        productTypes.add(createType("Постеры", "Posters"));
-        productTypes.add(createType("Газетницы и журнальницы", "Newspapers and magazines"));
-        productTypes.add(createType("Шкатулки", "Caskets"));
-        productTypes.add(createType("Магниты на холодильник", "Fridge magnets"));
-        productTypes.add(createType("Вечные календари", "Perpetual Calendars"));
-        productTypes.add(createType("Конфетницы и спецовницы", "Candy and spelled girls"));
+        productTypes.add(createType("Постеры", "Posters", "https://lovely-dom.ru/wp-content/uploads/2017/05/poster2.jpg"));
+        productTypes.add(createType("Газетницы и журнальницы", "Newspapers and magazines", "https://cs5.livemaster.ru/storage/0c/6d/558b473c32b11a8d43d762818esz--kantselyarskie-tovary-zhurnalnitsa-flowers.jpg"));
+        productTypes.add(createType("Шкатулки", "Caskets", "https://cs5.livemaster.ru/storage/a5/2d/cf0256219fb82c87e33e633b602m--dlya-doma-i-interera-shkatulka-cacao.jpg"));
+        productTypes.add(createType("Магниты на холодильник", "Fridge magnets", "http://indada.ru/system/images/7357/large/magnit-na-holodilnik-16.jpg"));
+        productTypes.add(createType("Вечные календари", "Perpetual Calendars", "https://cs1.livemaster.ru/storage/3e/b7/0412be7fbec5e9a547e1c82f74xy--kantselyarskie-tovary-vechnyj-kalendar-sova.jpg"));
+        productTypes.add(createType("Конфетницы и спецовницы", "Candy and spelled girls", "https://cs5.livemaster.ru/storage/40/ab/1e799a1da6fac8ce53e4a4cfe651--materialy-dlya-tvorchestva-konfetnitsa-zagotovka.jpg"));
 
-        productTypes.add(createType("Настенное пано", "Wall Panorama"));
+        productTypes.add(createType("Настенное пано", "Wall Panorama", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqGp-Z7LX8Yqe6MUCMvFwhmmcOgKHfU1u7tIEPD-UpF2kXc9A6"));
 
         return productTypes;
     }
 
-    private ProductType createType(String russianName, String englishName){
+    private ProductType createType(String russianName, String englishName, String image){
         ProductType productType = new ProductType();
         ProductTypeName productNameEN = new ProductTypeName(englishName,  Locale.English, productType);
         ProductTypeName productNameRU = new ProductTypeName(russianName, Locale.Russian, productType);
         productType.setProductTypeNames(new HashSet<>(Arrays.asList(productNameEN, productNameRU)));
+        productType.setImage(image);
         productTypeRepository.save(productType);
         return productType;
     }
@@ -132,40 +133,7 @@ public class ProductServiceImpl implements ProductService {
         Set<Material> materials = createMaterial();
 
        List<ProductType> productTypes = createType();
-      /*   ProductType productType = productTypes.get(0);
-        Product product1 = new Product();
-        product1.setPrice(250);
-        product1.setSize("145 x 145 x 70");
-        product1.setTechnologies(technologies);
-        product1.setPopular((short) 1);
-        product1.setCreatedDate(currentDate);
-        ProductName productNameTed = new ProductName("sdasdasd",  Locale.English, product1);
-        ProductName productNameTed2 = new ProductName("Шкатулка Охуенная",  Locale.Russian, product1);
-
-        product1.setProductNames(new HashSet<>(Arrays.asList(productNameTed, productNameTed2)));
-        ProductDescription productDescription = new ProductDescription("Some description Informatoim",  Locale.English, product1);
-        product1.setProductDescriptions(new HashSet<>(Arrays.asList(productDescription)));
-        product1.setCategories(new HashSet<>(Arrays.asList(category)));
-        product1.setProductTypes(new HashSet<>(Arrays.asList(productType)));
-        product1.setMaterials(materials);
-
-        productRepository.save(product1);
-
-        Product product2 = new Product();
-        product2.setPrice(250);
-        product2.setSize("145 x 145 x 70");
-        product2.setTechnologies(technologies);
-        ProductName productNameHonus = new ProductName("Honus", Locale.Russian, product2);
-        product2.setProductNames(new HashSet<>(Arrays.asList(productNameHonus, productNameTed)));
-        ProductDescription productDescription2 = new ProductDescription("Some description Informatoim",  Locale.English, product2);
-        product2.setProductDescriptions(new HashSet<>(Arrays.asList(productDescription2)));
-        product2.setCategories(new HashSet<>(Arrays.asList(category)));
-        product2.setProductTypes(new HashSet<>(Arrays.asList(productType)));
-        product2.setMaterials(materials);
-        product2.setCreatedDate(currentDate);
-
-        productRepository.save(product2);
-
+      /*
         BundleProduct bundleProduct = new BundleProduct();
         bundleProduct.setPrice(250);
         bundleProduct.setBundleImage("testImage");
@@ -183,23 +151,7 @@ public class ProductServiceImpl implements ProductService {
         bundleProduct.setCreatedDate(currentDate);
 
         productRepository.save(bundleProduct);
-
-        BundleProduct bundleProduct2 = new BundleProduct();
-        bundleProduct2.setPrice(250);
-        bundleProduct2.setSize("145 x 145 x 70");
-        bundleProduct2.setBundleImage("testImage2");
-        bundleProduct2.setTechnologies(technologies);
-        ProductName productNameBundle4= new ProductName("Супер Бандл 2", Locale.Russian, bundleProduct2);
-        ProductName productNameBundle5= new ProductName("Super Bundle 2", Locale.English, bundleProduct2);
-        bundleProduct2.setProductNames(new HashSet<>(Arrays.asList(productNameBundle4, productNameBundle5)));
-        ProductDescription productDescriptionBundle4 = new ProductDescription("Some description Informatoim",  Locale.English, bundleProduct2);
-        bundleProduct2.setProductDescriptions(new HashSet<>(Arrays.asList(productDescriptionBundle4)));
-        bundleProduct2.setCategories(new HashSet<>(Arrays.asList(category)));
-        bundleProduct2.setProductTypes(new HashSet<>(Arrays.asList(productType)));
-        bundleProduct2.setMaterials(materials);
-        bundleProduct2.setCreatedDate(currentDate);
-
-        productRepository.save(bundleProduct2);*/
+*/
 
         List<String> names = Arrays.asList("супер товар", "очень товар", "охуеть товар", "заебись товар", "пиздат товар", "необыкновене товар", "я в ахуе товар");
         List<String> images = Arrays.asList("http://omegatea.ru/img/big/522000.png", "http://лавкажеланий.рф/images/11shk.png", "http://img1.liveinternet.ru/images/attach/c/7/97/870/97870953_000.png");

@@ -85,6 +85,7 @@ CREATE TABLE IF NOT EXISTS `product_category` (
 
 CREATE TABLE IF NOT EXISTS `product_type` (
   `product_type_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `image` VARCHAR(200) DEFAULT NULL,
   PRIMARY KEY (`product_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 

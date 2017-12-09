@@ -26,11 +26,15 @@ public class ProductType implements Serializable {
     @JsonIgnore
     private Set<Product> products;
 
+    @Column(name="image")
+    private String image;
+
     public ProductType(){}
 
-    public ProductType(Set<ProductTypeName> productTypeNames, Set<Product> products) {
+    public ProductType(Set<ProductTypeName> productTypeNames, Set<Product> products, String image) {
         this.productTypeNames = productTypeNames;
         this.products = products;
+        this.image = image;
     }
 
     public long getId() {
@@ -55,5 +59,13 @@ public class ProductType implements Serializable {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
