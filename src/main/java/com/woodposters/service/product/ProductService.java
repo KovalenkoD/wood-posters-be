@@ -16,5 +16,7 @@ public interface ProductService {
     void deleteProduct(Long id);
 
     List<Product> getAllProducts();
+
+    List<Product> getMostPopularProducts(final String discriminator, short popular);
 }
 

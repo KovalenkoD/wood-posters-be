@@ -23,10 +23,11 @@ public class ProductConverter extends CommonConverter {
         convertMap.put("id", product.getId());
         convertMap.put("price", product.getPrice());
         convertMap.put("size", product.getSize());
+        convertMap.put("image", product.getImage());
         convertMap.put("name", getStringFromLocaleNameObjects(product.getProductNames(), locale));
         convertMap.put("description", getStringFromLocaleDescriptionObjects(product.getProductDescriptions(), locale));
         convertMap.put("categories", convertCategories(product.getCategories(), locale));
-        convertMap.put("productTypes", convertProductTypes(product.getProductTypes(), locale));
+        convertMap.put("productType", ProductTypeConverter.convert(product.getProductType(), locale));
         convertMap.put("technologies", convertTechnologies(product.getTechnologies(), locale));
         convertMap.put("materials", convertMaterials(product.getMaterials(), locale));
         return convertMap;
@@ -38,11 +39,6 @@ public class ProductConverter extends CommonConverter {
         return categoryConvertResult;
     }
 
-    public static List<Map<String, Object>> convertProductTypes(Set<ProductType> productTypes, Locale locale){
-        List<Map<String, Object>> productTypeConvertResult = new ArrayList<>();
-        productTypes.forEach(productType -> productTypeConvertResult.add(ProductTypeConverter.convert(productType, locale)));
-        return productTypeConvertResult;
-    }
 
     public static List<Map<String, Object>> convertTechnologies(Set<Technology> technologies, Locale locale){
         List<Map<String, Object>> technologyConvertResult = new ArrayList<>();

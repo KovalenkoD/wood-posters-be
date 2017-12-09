@@ -30,8 +30,11 @@ CREATE TABLE IF NOT EXISTS `product` (
   `price` decimal(10,0) NOT NULL,
   `size` VARCHAR(20) DEFAULT NULL,
   `status` tinyint(1) DEFAULT 1 NOT NULL,
+  `image` VARCHAR(70) DEFAULT NULL,
   `bundle_image` VARCHAR(20) DEFAULT NULL,
   `discriminator` VARCHAR(2) NOT NULL,
+  `popular` tinyint(1) DEFAULT 0 NOT NULL,
+  `creation_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`product_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
@@ -95,11 +98,15 @@ CREATE TABLE IF NOT EXISTS `product_type_name` (
   CONSTRAINT `product_type_name_ibfk_1` FOREIGN KEY (`product_type_id`) REFERENCES `product_type` (`product_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `product_type_mapping` (
- `product_id` int(11) unsigned NOT NULL,
- `product_type_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`product_id`,`product_type_id`),
-  KEY `product_type_id` (`product_type_id`),
+
+
+CREATE TABLE `product_type_mapping` (
+  `product_type_id` int(11) unsigned NOT NULL,
+  `product_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`product_type_id`,`product_id`),
+  UNIQUE KEY `product_id_UNIQUE` (`product_id`),
+  KEY `fk_product_type_id` (`product_type_id`),
+  KEY `fk_product_id` (`product_id`),
   CONSTRAINT `product_type_mapping_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
   CONSTRAINT `product_type_mapping_ibfk_2` FOREIGN KEY (`product_type_id`) REFERENCES `product_type` (`product_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;

@@ -78,4 +78,13 @@ public class ProductsController {
         Map result = ProductConverter.convert(product, wizardState.getLocale());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @GetMapping("getMostPopularProducts/{discriminator}/{popular}")
+    public ResponseEntity<List> getMostPopularProducts(@PathVariable("discriminator") String discriminator, @PathVariable("popular") short popular ) {
+        List<Product> products = productService.getMostPopularProducts(discriminator, popular);
+        List result = ProductConverter.convert(products, wizardState.getLocale());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
 }

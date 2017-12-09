@@ -10,11 +10,13 @@ import org.apache.lucene.analysis.ngram.NGramFilterFactory;
 import org.apache.lucene.analysis.ru.RussianLightStemFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Parameter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,6 +53,9 @@ public class Product implements Serializable {
     @Column(name="size")
     private String size;
 
+    @Column(name="image")
+    private String image;
+
     @Column(name="status")
     private short status;
 
@@ -71,13 +76,13 @@ public class Product implements Serializable {
     )
     private Set<Category> categories;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToOne(cascade = { CascadeType.ALL })
     @JoinTable(
             name = "product_type_mapping",
             joinColumns = {@JoinColumn(name = "product_id")},
             inverseJoinColumns = {@JoinColumn(name = "product_type_id")}
     )
-    Set<ProductType> productTypes;
+    private ProductType productType;
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
@@ -95,14 +100,21 @@ public class Product implements Serializable {
     )
     private Set<Material> materials;
 
+    @Column(name="popular")
+    private short popular;
+
+    @Column(name="creation_date")
+    @Type(type="date")
+    private Date createdDate;
+
     public Product(){}
 
-    public Product(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, Set<Category> categories, Set<ProductType> productTypes, Set<Technology> technologies, Set<Material> materials) {
+    public Product(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, Set<Category> categories, ProductType productType, Set<Technology> technologies, Set<Material> materials) {
         this.price = price;
         this.status = status;
         this.productNames = productNames;
         this.categories = categories;
-        this.productTypes = productTypes;
+        this.productType = productType;
         this.productDescriptions = productDescriptions;
         this.size = size;
         this.technologies = technologies;
@@ -149,12 +161,12 @@ public class Product implements Serializable {
         this.categories = categories;
     }
 
-    public Set<ProductType> getProductTypes() {
-        return productTypes;
+    public ProductType getProductType() {
+        return productType;
     }
 
-    public void setProductTypes(Set<ProductType> productTypes) {
-        this.productTypes = productTypes;
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 
     public Set<ProductDescription> getProductDescriptions() {
@@ -187,5 +199,29 @@ public class Product implements Serializable {
 
     public void setMaterials(Set<Material> materials) {
         this.materials = materials;
+    }
+
+    public short getPopular() {
+        return popular;
+    }
+
+    public void setPopular(short popular) {
+        this.popular = popular;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

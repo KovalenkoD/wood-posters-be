@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
+import java.sql.Date;
 import java.util.*;
 
 
@@ -61,17 +62,18 @@ public class ProductServiceImpl implements ProductService {
         return category;
     }
 
-    private ProductType createType(){
-        createType("Постеры", "Posters");
-        createType("Газетницы и журнальницы", "Newspapers and magazines");
-        createType("Шкатулки", "Caskets");
-        createType("Магниты на холодильник", "Fridge magnets");
-        createType("Вечные календари", "Perpetual Calendars");
-        createType("Конфетницы и спецовницы", "Candy and spelled girls");
+    private List<ProductType> createType(){
+        List<ProductType> productTypes = new ArrayList<>();
+        productTypes.add(createType("Постеры", "Posters"));
+        productTypes.add(createType("Газетницы и журнальницы", "Newspapers and magazines"));
+        productTypes.add(createType("Шкатулки", "Caskets"));
+        productTypes.add(createType("Магниты на холодильник", "Fridge magnets"));
+        productTypes.add(createType("Вечные календари", "Perpetual Calendars"));
+        productTypes.add(createType("Конфетницы и спецовницы", "Candy and spelled girls"));
 
-        ProductType productType = createType("Настенное пано", "Wall Panorama");
+        productTypes.add(createType("Настенное пано", "Wall Panorama"));
 
-        return productType;
+        return productTypes;
     }
 
     private ProductType createType(String russianName, String englishName){
@@ -124,14 +126,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void addProducts() {
+        Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         Category category = createCategory();
         Set<Technology> technologies = createTechnologies();
         Set<Material> materials = createMaterial();
-        ProductType productType = createType();
+
+       List<ProductType> productTypes = createType();
+      /*   ProductType productType = productTypes.get(0);
         Product product1 = new Product();
         product1.setPrice(250);
         product1.setSize("145 x 145 x 70");
         product1.setTechnologies(technologies);
+        product1.setPopular((short) 1);
+        product1.setCreatedDate(currentDate);
         ProductName productNameTed = new ProductName("sdasdasd",  Locale.English, product1);
         ProductName productNameTed2 = new ProductName("Шкатулка Охуенная",  Locale.Russian, product1);
 
@@ -155,6 +162,7 @@ public class ProductServiceImpl implements ProductService {
         product2.setCategories(new HashSet<>(Arrays.asList(category)));
         product2.setProductTypes(new HashSet<>(Arrays.asList(productType)));
         product2.setMaterials(materials);
+        product2.setCreatedDate(currentDate);
 
         productRepository.save(product2);
 
@@ -163,6 +171,7 @@ public class ProductServiceImpl implements ProductService {
         bundleProduct.setBundleImage("testImage");
         bundleProduct.setSize("145 x 145 x 70");
         bundleProduct.setTechnologies(technologies);
+        bundleProduct.setPopular((short) 1);
         ProductName productNameBundle= new ProductName("Супер Бандл", Locale.Russian, bundleProduct);
         ProductName productNameBundle2= new ProductName("Super Bundle", Locale.English, bundleProduct);
         bundleProduct.setProductNames(new HashSet<>(Arrays.asList(productNameBundle, productNameBundle2)));
@@ -171,6 +180,7 @@ public class ProductServiceImpl implements ProductService {
         bundleProduct.setCategories(new HashSet<>(Arrays.asList(category)));
         bundleProduct.setProductTypes(new HashSet<>(Arrays.asList(productType)));
         bundleProduct.setMaterials(materials);
+        bundleProduct.setCreatedDate(currentDate);
 
         productRepository.save(bundleProduct);
 
@@ -187,9 +197,49 @@ public class ProductServiceImpl implements ProductService {
         bundleProduct2.setCategories(new HashSet<>(Arrays.asList(category)));
         bundleProduct2.setProductTypes(new HashSet<>(Arrays.asList(productType)));
         bundleProduct2.setMaterials(materials);
+        bundleProduct2.setCreatedDate(currentDate);
 
-        productRepository.save(bundleProduct2);
+        productRepository.save(bundleProduct2);*/
 
+        List<String> names = Arrays.asList("супер товар", "очень товар", "охуеть товар", "заебись товар", "пиздат товар", "необыкновене товар", "я в ахуе товар");
+        List<String> images = Arrays.asList("http://omegatea.ru/img/big/522000.png", "http://лавкажеланий.рф/images/11shk.png", "http://img1.liveinternet.ru/images/attach/c/7/97/870/97870953_000.png");
+
+        for(ProductType productType1 : productTypes){
+            for(int i = 0; i < names.size(); i ++){
+                String name = names.get(i);
+                for(String image : images){
+                    if(i % 3 == 0){
+                        createProduct(name + " RU", name + " EN", image, (short) 1, productType1, currentDate, technologies, materials, category);
+                    } else {
+                        createProduct(name + " RU", name + " EN", image, (short) 2, productType1, currentDate, technologies, materials, category);
+                    }
+                    createProduct(name + " NP RU", name + "NP EN", image, (short) 0, productType1, currentDate, technologies, materials, category);
+
+                }
+            }
+
+        }
+    }
+
+    private void createProduct(String russianName, String englishName, String image, short popular, ProductType productType, Date currentDate, Set<Technology> technologies, Set<Material> materials, Category category){
+        Product product = new Product();
+        product.setPrice(250);
+        product.setSize("145 x 145 x 70");
+        product.setTechnologies(technologies);
+        ProductName productNameRU = new ProductName(russianName, Locale.Russian, product);
+        ProductName productNameEN= new ProductName(englishName, Locale.English, product);
+        product.setProductNames(new HashSet<>(Arrays.asList(productNameRU, productNameEN)));
+        ProductDescription productDescriptionRU= new ProductDescription("Какой то дескрипшен",  Locale.Russian, product);
+        ProductDescription productDescriptionEN= new ProductDescription("Some description Informatoim",  Locale.English, product);
+        product.setProductDescriptions(new HashSet<>(Arrays.asList(productDescriptionRU, productDescriptionEN)));
+        product.setCategories(new HashSet<>(Arrays.asList(category)));
+        product.setProductType(productType);
+        product.setMaterials(materials);
+        product.setCreatedDate(currentDate);
+        product.setImage(image);
+        product.setPopular(popular);
+
+        productRepository.save(product);
     }
 
     @Override
@@ -208,4 +258,13 @@ public class ProductServiceImpl implements ProductService {
         }
         return productsList;
     }
+
+    @Override
+    public List<Product> getMostPopularProducts(final String discriminator, short popular) {
+        List<Product> list = entityManager.createQuery("SELECT product FROM Product product WHERE discriminator=? AND popular=?")
+                .setParameter(1, discriminator).setParameter(2, popular).getResultList();
+        return list;
+    }
+
+
 }

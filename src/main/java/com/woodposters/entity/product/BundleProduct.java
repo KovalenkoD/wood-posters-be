@@ -34,8 +34,8 @@ public class BundleProduct extends Product {
         this.bundleImage = bundleImage;
     }
 
-    public BundleProduct(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, String bundleImage, Set<Category> categories, Set<ProductType> productTypes, Set<Technology> technologies, Set<Material> materials) {
-        super(price, size, status, productNames, productDescriptions, categories, productTypes, technologies, materials);
+    public BundleProduct(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, String bundleImage, Set<Category> categories, ProductType productType, Set<Technology> technologies, Set<Material> materials) {
+        super(price, size, status, productNames, productDescriptions, categories, productType, technologies, materials);
         this.bundleImage = bundleImage;
     }
 }

@@ -22,7 +22,7 @@ public class ProductType implements Serializable {
     private Set<ProductTypeName> productTypeNames;
 
 
-    @ManyToMany(mappedBy = "productTypes")
+    @OneToMany(mappedBy="productType")
     @JsonIgnore
     private Set<Product> products;
 
