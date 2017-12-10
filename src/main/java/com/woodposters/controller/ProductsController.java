@@ -1,8 +1,10 @@
 package com.woodposters.controller;
 
 import com.woodposters.beans.WizardState;
+import com.woodposters.converters.BundleConverter;
 import com.woodposters.converters.ProductConverter;
 import com.woodposters.entity.category.Category;
+import com.woodposters.entity.product.BundleProduct;
 import com.woodposters.entity.product.Product;
 import com.woodposters.repository.ProductRepository;
 import com.woodposters.service.product.ProductService;
@@ -86,5 +88,18 @@ public class ProductsController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @GetMapping("getMostPopularBundle/{discriminator}/{popular}")
+    public ResponseEntity<List> getMostPopularBundle(@PathVariable("discriminator") String discriminator, @PathVariable("popular") short popular ) {
+        List<BundleProduct> products = productService.getMostPopularBundleProducts(discriminator, popular);
+        List result = BundleConverter.convertBundles(products, wizardState.getLocale());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("getAllBundles")
+    public ResponseEntity<List> getAllBundles() {
+        List<BundleProduct> products = productService.getAllBundles();
+        List result = BundleConverter.convertBundles(products, wizardState.getLocale());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
 }

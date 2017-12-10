@@ -1,5 +1,6 @@
 package com.woodposters.service.product;
 
+import com.woodposters.entity.product.BundleProduct;
 import com.woodposters.entity.product.Product;
 import org.springframework.security.access.annotation.Secured;
 
@@ -18,5 +19,9 @@ public interface ProductService {
     List<Product> getAllProducts();
 
     List<Product> getMostPopularProducts(final String discriminator, short popular);
+
+    List<BundleProduct> getMostPopularBundleProducts(final String discriminator, short popular);
+
+    List<BundleProduct> getAllBundles();
 }
 

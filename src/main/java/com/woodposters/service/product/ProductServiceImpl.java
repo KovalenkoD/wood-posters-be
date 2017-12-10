@@ -5,10 +5,7 @@ import com.woodposters.entity.category.Category;
 import com.woodposters.entity.category.CategoryName;
 import com.woodposters.entity.material.Material;
 import com.woodposters.entity.material.MaterialName;
-import com.woodposters.entity.product.BundleProduct;
-import com.woodposters.entity.product.Product;
-import com.woodposters.entity.product.ProductDescription;
-import com.woodposters.entity.product.ProductName;
+import com.woodposters.entity.product.*;
 import com.woodposters.entity.productType.ProductType;
 import com.woodposters.entity.productType.ProductTypeName;
 import com.woodposters.entity.technology.Technology;
@@ -156,24 +153,32 @@ public class ProductServiceImpl implements ProductService {
         List<String> names = Arrays.asList("супер товар", "очень товар", "охуеть товар", "заебись товар", "пиздат товар", "необыкновене товар", "я в ахуе товар");
         List<String> images = Arrays.asList("http://omegatea.ru/img/big/522000.png", "http://лавкажеланий.рф/images/11shk.png", "http://img1.liveinternet.ru/images/attach/c/7/97/870/97870953_000.png");
 
+        List<Product> products = new ArrayList<>();
+
+        Product product = null;
         for(ProductType productType1 : productTypes){
             for(int i = 0; i < names.size(); i ++){
                 String name = names.get(i);
                 for(String image : images){
                     if(i % 3 == 0){
-                        createProduct(name + " RU", name + " EN", image, (short) 1, productType1, currentDate, technologies, materials, category);
+                        product = createProduct(name + " RU", name + " EN", image, (short) 1, productType1, currentDate, technologies, materials, category);
+                    } else if(i%2 == 0){
+                        product = createProduct(name + " RU", name + " EN", image, (short) 2, productType1, currentDate, technologies, materials, category);
                     } else {
-                        createProduct(name + " RU", name + " EN", image, (short) 2, productType1, currentDate, technologies, materials, category);
+                        product = createProduct(name + " NP RU", name + "NP EN", image, (short) 0, productType1, currentDate, technologies, materials, category);
                     }
-                    createProduct(name + " NP RU", name + "NP EN", image, (short) 0, productType1, currentDate, technologies, materials, category);
-
+                    if(products.size() < 3){
+                        products.add(product);
+                    }
                 }
             }
+            createBundleProduct("Бандл продукт RU", "Bundle Product EN", "https://walldeco.ua/img/for_page/poster5.jpg", (short) 0, productType1, currentDate, technologies, materials, category, products);
+            createBundleProduct("Бандл поп продукт RU", "Bundle POP Product EN", "https://walldeco.ua/img/for_page/poster5.jpg", (short) 1, productType1, currentDate, technologies, materials, category, products);
 
         }
     }
 
-    private void createProduct(String russianName, String englishName, String image, short popular, ProductType productType, Date currentDate, Set<Technology> technologies, Set<Material> materials, Category category){
+    private Product createProduct(String russianName, String englishName, String image, short popular, ProductType productType, Date currentDate, Set<Technology> technologies, Set<Material> materials, Category category){
         Product product = new Product();
         product.setPrice(250);
         product.setSize("145 x 145 x 70");
@@ -192,6 +197,46 @@ public class ProductServiceImpl implements ProductService {
         product.setPopular(popular);
 
         productRepository.save(product);
+        return product;
+    }
+
+    private void createBundleProduct(String russianName, String englishName, String image, short popular, ProductType productType, Date currentDate, Set<Technology> technologies, Set<Material> materials, Category category, List<Product> products){
+        BundleProduct bundleProduct = new BundleProduct();
+        bundleProduct.setPrice(250);
+        bundleProduct.setSize("145 x 145 x 70");
+        bundleProduct.setTechnologies(technologies);
+        ProductName productNameRU = new ProductName(russianName, Locale.Russian, bundleProduct);
+        ProductName productNameEN= new ProductName(englishName, Locale.English, bundleProduct);
+        bundleProduct.setProductNames(new HashSet<>(Arrays.asList(productNameRU, productNameEN)));
+        ProductDescription productDescriptionRU= new ProductDescription("Какой то дескрипшен",  Locale.Russian, bundleProduct);
+        ProductDescription productDescriptionEN= new ProductDescription("Some description Informatoim",  Locale.English, bundleProduct);
+        bundleProduct.setProductDescriptions(new HashSet<>(Arrays.asList(productDescriptionRU, productDescriptionEN)));
+        bundleProduct.setCategories(new HashSet<>(Arrays.asList(category)));
+        bundleProduct.setProductType(productType);
+        bundleProduct.setMaterials(materials);
+        bundleProduct.setCreatedDate(currentDate);
+        bundleProduct.setBundleImage(image);
+        bundleProduct.setImage(image);
+
+        Set<BundleChildProduct> bundleChildProducts = new HashSet<>();
+        for(int i = 0; i < products.size(); i++){
+            Product product = products.get(i);
+            BundleChildProduct bundleChildProduct = new BundleChildProduct();
+            bundleChildProduct.setBundleProduct(bundleProduct);
+            bundleChildProduct.setProduct(product);
+            bundleChildProduct.setX_coordinate(15*i);
+            bundleChildProduct.setY_coordinate(15*i);
+            bundleChildProducts.add(bundleChildProduct);
+        }
+
+        bundleProduct.setBundleChildProducts(bundleChildProducts);
+
+        bundleProduct.setPopular(popular);
+
+
+
+
+        productRepository.save(bundleProduct);
     }
 
     @Override
@@ -215,6 +260,20 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getMostPopularProducts(final String discriminator, short popular) {
         List<Product> list = entityManager.createQuery("SELECT product FROM Product product WHERE discriminator=? AND popular=?")
                 .setParameter(1, discriminator).setParameter(2, popular).getResultList();
+        return list;
+    }
+
+    @Override
+    public List<BundleProduct> getMostPopularBundleProducts(final String discriminator, short popular) {
+        List<BundleProduct> list = entityManager.createQuery("SELECT product FROM BundleProduct product WHERE discriminator=? AND popular=?")
+                .setParameter(1, discriminator).setParameter(2, popular).getResultList();
+        return list;
+    }
+
+    @Override
+    public List<BundleProduct> getAllBundles() {
+        List<BundleProduct> list = entityManager.createQuery("SELECT product FROM BundleProduct product WHERE discriminator=?")
+                .setParameter(1, "BP").getResultList();
         return list;
     }
 

@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `size` VARCHAR(20) DEFAULT NULL,
   `status` tinyint(1) DEFAULT 1 NOT NULL,
   `image` VARCHAR(70) DEFAULT NULL,
-  `bundle_image` VARCHAR(20) DEFAULT NULL,
+  `bundle_image` VARCHAR(70) DEFAULT NULL,
   `discriminator` VARCHAR(2) NOT NULL,
   `popular` tinyint(1) DEFAULT 0 NOT NULL,
   `creation_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -56,6 +56,19 @@ CREATE TABLE IF NOT EXISTS `product_description` (
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`),
   CONSTRAINT `product_description_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `bundle_child` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) unsigned NOT NULL,
+  `bundle_product_id` int(11) unsigned NOT NULL,
+  `x_coordinate` int(11) unsigned NOT NULL,
+  `y_coordinate` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_id` (`product_id`),
+  KEY `bundle_product_id` (`bundle_product_id`),
+  CONSTRAINT `bundle_child_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
+  CONSTRAINT `bundle_child_ibfk_2` FOREIGN KEY (`bundle_product_id`) REFERENCES `product` (`product_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `category` (
