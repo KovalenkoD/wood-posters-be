@@ -7,7 +7,7 @@ import com.woodposters.entity.product.Product;
 
 import java.util.*;
 
-public class BundleConverter  extends CommonConverter{
+public class BundleConverter  extends CommonConverter {
 
     public static List<Map<String, Object>> convertBundles(List<BundleProduct> bundleProducts, Locale locale){
         List<Map<String, Object>> bundleItems = new ArrayList<>();

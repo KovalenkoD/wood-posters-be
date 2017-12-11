@@ -35,12 +35,6 @@ public class ProductsController {
     @Autowired
     private WizardState wizardState;
 
-    @GetMapping("getAllProducts")
-    public ResponseEntity<List> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
-        List result = ProductConverter.convert(products, wizardState.getLocale());
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
 
     @GetMapping("addProducts")
     public ResponseEntity<Void> addProducts() {
@@ -48,12 +42,7 @@ public class ProductsController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-/*    @PutMapping("updateProduct")
-    public ResponseEntity<Product> updateArticle(@RequestBody Product product) {
-        articleService.updateArticle(article);
-        return new ResponseEntity<Article>(article, HttpStatus.OK);
-    }
-   */
+
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);

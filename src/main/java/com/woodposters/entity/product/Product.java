@@ -224,4 +224,36 @@ public class Product implements Serializable {
     public void setImage(String image) {
         this.image = image;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        if (id != product.id) return false;
+        return createdDate != null ? createdDate.equals(product.createdDate) : product.createdDate == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = (int) (id ^ (id >>> 32));
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (size != null ? size.hashCode() : 0);
+        result = 31 * result + (image != null ? image.hashCode() : 0);
+        result = 31 * result + (int) status;
+        result = 31 * result + (productNames != null ? productNames.hashCode() : 0);
+        result = 31 * result + (productDescriptions != null ? productDescriptions.hashCode() : 0);
+        result = 31 * result + (categories != null ? categories.hashCode() : 0);
+        result = 31 * result + (productType != null ? productType.hashCode() : 0);
+        result = 31 * result + (technologies != null ? technologies.hashCode() : 0);
+        result = 31 * result + (materials != null ? materials.hashCode() : 0);
+        result = 31 * result + (int) popular;
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        return result;
+    }
 }
