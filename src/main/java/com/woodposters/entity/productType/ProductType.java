@@ -26,6 +26,9 @@ public class ProductType implements Serializable {
     @JsonIgnore
     private Set<Product> products;
 
+    @Column(name="visible")
+    private short visible;
+
     @Column(name="image")
     private String image;
 
@@ -67,5 +70,13 @@ public class ProductType implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public short getVisible() {
+        return visible;
+    }
+
+    public void setVisible(short visible) {
+        this.visible = visible;
     }
 }

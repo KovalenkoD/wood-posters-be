@@ -6,6 +6,7 @@ import com.woodposters.converters.ProductTypeConverter;
 import com.woodposters.entity.product.Product;
 import com.woodposters.entity.productType.ProductType;
 import com.woodposters.repository.ProductTypeRepository;
+import com.woodposters.service.productType.ProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ import java.util.Set;
 public class ProductTypeController {
 
     @Autowired
-    private ProductTypeRepository productTypeRepository;
+    private ProductTypeService productTypeService;
 
     @Autowired
     private WizardState wizardState;
@@ -31,14 +32,22 @@ public class ProductTypeController {
     @GetMapping("getAllProductTypes")
     public ResponseEntity<List> getAllProductTypes() {
         List result = new ArrayList();
-        Iterable<ProductType> productTypes = productTypeRepository.findAll();
+        Iterable<ProductType> productTypes = productTypeService.getAllProductTypes();
+        productTypes.forEach(productType -> result.add(ProductTypeConverter.convert(productType, wizardState.getLocale())));
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("getAllVisibleProductTypes")
+    public ResponseEntity<List> getAllVisibleProductTypes() {
+        List result = new ArrayList();
+        List<ProductType> productTypes = productTypeService.getAllVisibleProductTypes();
         productTypes.forEach(productType -> result.add(ProductTypeConverter.convert(productType, wizardState.getLocale())));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("getProductsByProductType/{id}")
     public ResponseEntity<List> getProductsByProductType(@PathVariable("id") Long id) {
-        ProductType category = productTypeRepository.findOne(id);
+        ProductType category = productTypeService.findProductType(id);
         Set<Product> products = category.getProducts();
         List result = ProductConverter.convert(products, wizardState.getLocale());
         return new ResponseEntity<>(result, HttpStatus.OK);

@@ -4,7 +4,7 @@ import com.woodposters.beans.Locale;
 import com.woodposters.entity.category.Category;
 import com.woodposters.entity.material.Material;
 import com.woodposters.entity.product.Product;
-import com.woodposters.entity.productType.ProductType;
+import com.woodposters.entity.product.ProductImage;
 import com.woodposters.entity.technology.Technology;
 
 import java.util.*;
@@ -30,6 +30,9 @@ public class ProductConverter extends CommonConverter {
         convertMap.put("productType", ProductTypeConverter.convert(product.getProductType(), locale));
         convertMap.put("technologies", convertTechnologies(product.getTechnologies(), locale));
         convertMap.put("materials", convertMaterials(product.getMaterials(), locale));
+        convertMap.put("images", convertImages(product.getImages()));
+        convertMap.put("imagePresentation", product.getImagePresentation());
+
         return convertMap;
     }
 
@@ -52,6 +55,12 @@ public class ProductConverter extends CommonConverter {
         return materialConvertResult;
     }
 
+    public static List<String> convertImages(Set<ProductImage> images){
+        if(images == null || images.isEmpty()) return Collections.EMPTY_LIST;
+        List<String> imagesResult = new ArrayList<>();
+        images.forEach(image -> imagesResult.add(image.getImage()));
+        return imagesResult;
+    }
 
 
 

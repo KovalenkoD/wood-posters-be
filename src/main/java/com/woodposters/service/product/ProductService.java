@@ -23,5 +23,8 @@ public interface ProductService {
     List<BundleProduct> getMostPopularBundleProducts(final String discriminator, short popular);
 
     List<BundleProduct> getAllBundles();
+
+    List<Product> findRelatedProducts(long id);
+
 }
 

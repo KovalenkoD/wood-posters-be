@@ -91,4 +91,10 @@ public class ProductsController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @GetMapping("getRelatedProducts/{id}")
+    public ResponseEntity<List> getMostPopularProducts(@PathVariable("id") long id) {
+        List<Product> products = productService.findRelatedProducts(id);
+        List result = ProductConverter.convert(products, wizardState.getLocale());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

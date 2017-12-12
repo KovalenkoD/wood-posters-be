@@ -59,6 +59,9 @@ public class Product implements Serializable {
     @Column(name="status")
     private short status;
 
+    @Column(name="image_presentation")
+    private short imagePresentation;
+
     @OneToMany(mappedBy="product")
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     @IndexedEmbedded
@@ -67,6 +70,10 @@ public class Product implements Serializable {
     @OneToMany(mappedBy="product")
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Set<ProductDescription> productDescriptions;
+
+    @OneToMany(mappedBy="product")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private Set<ProductImage> images;
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
@@ -234,6 +241,22 @@ public class Product implements Serializable {
 
         if (id != product.id) return false;
         return createdDate != null ? createdDate.equals(product.createdDate) : product.createdDate == null;
+    }
+
+    public short getImagePresentation() {
+        return imagePresentation;
+    }
+
+    public void setImagePresentation(short imagePresentation) {
+        this.imagePresentation = imagePresentation;
+    }
+
+    public Set<ProductImage> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<ProductImage> images) {
+        this.images = images;
     }
 
     @Override

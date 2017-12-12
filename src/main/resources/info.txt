@@ -30,8 +30,9 @@ CREATE TABLE IF NOT EXISTS `product` (
   `price` decimal(10,0) NOT NULL,
   `size` VARCHAR(20) DEFAULT NULL,
   `status` tinyint(1) DEFAULT 1 NOT NULL,
-  `image` VARCHAR(70) DEFAULT NULL,
-  `bundle_image` VARCHAR(70) DEFAULT NULL,
+  `image_presentation` tinyint(1) DEFAULT 0 NOT NULL,
+  `image` VARCHAR(200) DEFAULT NULL,
+  `bundle_image` VARCHAR(200) DEFAULT NULL,
   `discriminator` VARCHAR(2) NOT NULL,
   `popular` tinyint(1) DEFAULT 0 NOT NULL,
   `creation_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -46,6 +47,15 @@ CREATE TABLE IF NOT EXISTS `product_name` (
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`),
   CONSTRAINT `product_name_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `product_image` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) unsigned NOT NULL,
+  `image` VARCHAR(300) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `product_image_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `product_description` (
@@ -98,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `product_category` (
 
 CREATE TABLE IF NOT EXISTS `product_type` (
   `product_type_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `visible` tinyint(1) DEFAULT 1 NOT NULL,
   `image` VARCHAR(200) DEFAULT NULL,
   PRIMARY KEY (`product_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
@@ -173,4 +184,5 @@ CREATE TABLE IF NOT EXISTS `product_material` (
   CONSTRAINT `product_material_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
   CONSTRAINT `product_material_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `material` (`material_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
 
