@@ -1,24 +1,18 @@
 package com.woodposters.service.productType;
 
 import com.woodposters.beans.Locale;
-import com.woodposters.entity.category.Category;
-import com.woodposters.entity.category.CategoryName;
-import com.woodposters.entity.material.Material;
-import com.woodposters.entity.material.MaterialName;
-import com.woodposters.entity.product.*;
+import com.woodposters.entity.adminModel.AdminProductType;
 import com.woodposters.entity.productType.ProductType;
 import com.woodposters.entity.productType.ProductTypeName;
-import com.woodposters.entity.technology.Technology;
-import com.woodposters.entity.technology.TechnologyName;
-import com.woodposters.repository.*;
+import com.woodposters.repository.ProductTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import java.sql.Date;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 
 @Service
@@ -46,5 +40,23 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     @Override
     public ProductType findProductType(long id) {
         return productTypeRepository.findOne(id);
+    }
+
+    @Override
+    public void createProductType(AdminProductType adminProductType) {
+        createProductType(adminProductType.getNameRU(), adminProductType.getNameEN(), adminProductType.getNameUA(), adminProductType.getImageURL(), (short) 1);
+    }
+
+    private ProductType createProductType(String russianName, String englishName, String ukrainianName, String image, short visible){
+        ProductType productType = new ProductType();
+        ProductTypeName productNameEN = new ProductTypeName(englishName,  Locale.English, productType);
+        ProductTypeName productNameRU = new ProductTypeName(russianName, Locale.Russian, productType);
+        ProductTypeName productNameUA = new ProductTypeName(ukrainianName, Locale.Ukraine, productType);
+
+        productType.setProductTypeNames(new HashSet<>(Arrays.asList(productNameEN, productNameRU, productNameUA)));
+        productType.setVisible(visible);
+        productType.setImage(image);
+        productTypeRepository.save(productType);
+        return productType;
     }
 }

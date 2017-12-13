@@ -1,5 +1,6 @@
 package com.woodposters.service.productType;
 
+import com.woodposters.entity.adminModel.AdminProductType;
 import com.woodposters.entity.product.BundleProduct;
 import com.woodposters.entity.product.Product;
 import com.woodposters.entity.productType.ProductType;
@@ -14,6 +15,9 @@ public interface ProductTypeService {
     List<ProductType> getAllVisibleProductTypes();
 
     ProductType findProductType(long id);
+
+    @Secured({"ROLE_ADMIN"})
+    void createProductType(AdminProductType adminProductType);
 
 }
 
