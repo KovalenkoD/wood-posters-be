@@ -2,6 +2,7 @@ package com.woodposters.controller;
 
 import com.woodposters.beans.Locale;
 import com.woodposters.beans.WizardState;
+import com.woodposters.converters.CommonConverter;
 import com.woodposters.converters.ProductConverter;
 import com.woodposters.converters.ProductTypeConverter;
 import com.woodposters.entity.adminModel.AdminProductType;
@@ -30,13 +31,7 @@ public class ProductTypeController {
     @Autowired
     private WizardState wizardState;
 
-    @GetMapping("getAllProductTypes")
-    public ResponseEntity<List> getAllProductTypes() {
-        List result = new ArrayList();
-        Iterable<ProductType> productTypes = productTypeService.getAllProductTypes();
-        productTypes.forEach(productType -> result.add(ProductTypeConverter.convert(productType, wizardState.getLocale())));
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+
 
     @GetMapping("getAllVisibleProductTypes")
     public ResponseEntity<List> getAllVisibleProductTypes() {
@@ -60,6 +55,19 @@ public class ProductTypeController {
     public ResponseEntity<Void> create(@RequestBody AdminProductType adminProductType) {
         productTypeService.createProductType(adminProductType);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("getAllProductTypes")
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<List> getAllProductTypes() {
+        List result = new ArrayList();
+        Iterable<ProductType> productTypes = productTypeService.getAllProductTypes();
+        productTypes.forEach(productType -> result.add(new AdminProductType(productType.getId(),
+                CommonConverter.getStringFromLocaleNameObjects(productType.getProductTypeNames(), Locale.Russian),
+                CommonConverter.getStringFromLocaleNameObjects(productType.getProductTypeNames(), Locale.English),
+                CommonConverter.getStringFromLocaleNameObjects(productType.getProductTypeNames(), Locale.Ukraine),
+                productType.getImage())));
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }
