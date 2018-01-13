@@ -1,5 +1,6 @@
 package com.woodposters.service.product;
 
+import com.woodposters.entity.adminModel.AdminProduct;
 import com.woodposters.entity.product.BundleProduct;
 import com.woodposters.entity.product.Product;
 import org.springframework.security.access.annotation.Secured;
@@ -25,6 +26,9 @@ public interface ProductService {
     List<BundleProduct> getAllBundles();
 
     List<Product> findRelatedProducts(long id);
+
+    @Secured({"ROLE_ADMIN"})
+    void createProduct(AdminProduct adminProduct);
 
 }
 

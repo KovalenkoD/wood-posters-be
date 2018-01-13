@@ -1,6 +1,8 @@
 package com.woodposters.service.product;
 
+import com.google.common.collect.Sets;
 import com.woodposters.beans.Locale;
+import com.woodposters.entity.adminModel.AdminProduct;
 import com.woodposters.entity.category.Category;
 import com.woodposters.entity.category.CategoryName;
 import com.woodposters.entity.material.Material;
@@ -296,6 +298,68 @@ public class ProductServiceImpl implements ProductService {
         List<Product> list = entityManager.createQuery("SELECT product FROM Product product WHERE product.productType.id=?")
                 .setParameter(1, product.getProductType().getId()).getResultList();
         return list;
+    }
+
+
+    @Override
+    public void createProduct(AdminProduct adminProduct) {
+        Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));
+        Set<Material> materials = Sets.newHashSet(materialRepository.findAll(adminProduct.getMaterialIDs()));
+        Set<Technology> technologies = Sets.newHashSet(technologyRepository.findAll(adminProduct.getTechnologyIDs()));
+
+        ProductType productType = productTypeRepository.findOne(adminProduct.getProductTypeID());
+        createProduct(adminProduct.getRussianName(), adminProduct.getEnglishName(), adminProduct.getUkrainianName(),
+                adminProduct.getPrice(), adminProduct.isBundle(), adminProduct.getSize(),technologies,
+                adminProduct.getRussianDescription(), adminProduct.getEnglishDescription(), adminProduct.getUkrainianDescription(),
+                categories, productType, materials, adminProduct.getPopular(),
+                adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage());
+    }
+
+    private Product createProduct(String russianName, String englishName, String ukrainianName,
+                                  double price, boolean isBundle, String size, Set<Technology> technologies,
+                                  String russianDescription, String englishDescription, String ukrainianDescription,
+                                  Set<Category> categories, ProductType productType, Set<Material> materials, short popular,
+                                  short imagePresentation, Set<String> images, String image){
+
+        Product product = isBundle ? new BundleProduct() : new Product();
+        Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+
+        product.setPrice(price);
+        product.setSize(size);
+        product.setTechnologies(technologies);
+        createProductName(russianName, englishName, ukrainianName, product);
+        createProductDescription(russianDescription, englishDescription, ukrainianDescription, product);
+        product.setCategories(categories);
+        product.setProductType(productType);
+        product.setImagePresentation(imagePresentation);
+        product.setMaterials(materials);
+        product.setCreatedDate(currentDate);
+        product.setImage(image);
+        product.setPopular(popular);
+
+        if(images != null){
+            Set<ProductImage> productImages = new HashSet<>();
+            images.forEach(imagePR -> productImages.add(new ProductImage(imagePR, product)));
+            product.setImages(productImages);
+        }
+
+        productRepository.save(product);
+
+        return product;
+    }
+
+    private void createProductName(String russianName, String englishName, String ukrainianName, Product product){
+        ProductName productNameRU = new ProductName(russianName, Locale.Russian, product);
+        ProductName productNameEN= new ProductName(englishName, Locale.English, product);
+        ProductName productNameUA= new ProductName(ukrainianName, Locale.Ukraine, product);
+        product.setProductNames(new HashSet<>(Arrays.asList(productNameRU, productNameEN, productNameUA)));
+    }
+
+    private void createProductDescription(String russianDescription, String englishDescription, String ukrainianDescription, Product product){
+        ProductDescription productDescriptionRU= new ProductDescription(russianDescription,  Locale.Russian, product);
+        ProductDescription productDescriptionEN= new ProductDescription(englishDescription,  Locale.English, product);
+        ProductDescription productDescriptionUA= new ProductDescription(ukrainianDescription,  Locale.Ukraine, product);
+        product.setProductDescriptions(new HashSet<>(Arrays.asList(productDescriptionRU, productDescriptionEN, productDescriptionUA)));
     }
 
 }

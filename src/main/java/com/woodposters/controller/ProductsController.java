@@ -3,6 +3,8 @@ package com.woodposters.controller;
 import com.woodposters.beans.WizardState;
 import com.woodposters.converters.BundleConverter;
 import com.woodposters.converters.ProductConverter;
+import com.woodposters.entity.adminModel.AdminProduct;
+import com.woodposters.entity.adminModel.AdminProductType;
 import com.woodposters.entity.category.Category;
 import com.woodposters.entity.product.BundleProduct;
 import com.woodposters.entity.product.Product;
@@ -12,6 +14,7 @@ import com.woodposters.service.search.ProductSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -96,5 +99,12 @@ public class ProductsController {
         List<Product> products = productService.findRelatedProducts(id);
         List result = ProductConverter.convert(products, wizardState.getLocale());
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "create", method = RequestMethod.POST)
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Void> create(@RequestBody AdminProduct adminProduct) {
+        productService.createProduct(adminProduct);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
