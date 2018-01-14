@@ -12,6 +12,8 @@ public class SalesOrder implements Serializable {
 
     private double fullPrice;
 
+    private Contact contact;
+
     public SalesOrder() {
         this.cartItems = new HashSet<>();
     }
@@ -48,5 +50,13 @@ public class SalesOrder implements Serializable {
 
     public void setCartItems(Set<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 }
