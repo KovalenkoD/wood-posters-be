@@ -1,24 +1,42 @@
 package com.woodposters.entity.quote;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.search.annotations.IndexedEmbedded;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name="sales_order")
 public class SalesOrder implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="sales_order_id")
     private long id;
 
+    @Transient
     private int count;
 
+    @Transient
     private double fullPrice;
 
+    @Column(name="status")
+    private short status;
+
+    @OneToOne(mappedBy = "salesOrder")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Contact contact;
+
+    @OneToMany(mappedBy="salesOrder")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private Set<CartItem> cartItems;
 
     public SalesOrder() {
         this.cartItems = new HashSet<>();
     }
-
-    private Set<CartItem> cartItems;
 
      public long getId() {
         return id;
@@ -58,5 +76,13 @@ public class SalesOrder implements Serializable {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    public short getStatus() {
+        return status;
+    }
+
+    public void setStatus(short status) {
+        this.status = status;
     }
 }

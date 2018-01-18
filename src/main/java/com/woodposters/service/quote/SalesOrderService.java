@@ -12,6 +12,8 @@ public interface SalesOrderService {
 
      SalesOrder cleanSalesOrder(SalesOrder salesOrder);
 
+     SalesOrder submitSalesOrder(SalesOrder salesOrder);
+
 
 
 }

@@ -186,3 +186,50 @@ CREATE TABLE IF NOT EXISTS `product_material` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE IF NOT EXISTS `sales_order` (
+  `sales_order_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `status` tinyint(1) DEFAULT 1 NOT NULL,
+  PRIMARY KEY (`sales_order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+
+
+
+CREATE TABLE IF NOT EXISTS `contact` (
+  `contact_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(40) NULL,
+  `last_name` varchar(40) NULL,
+  `comment` varchar(40) NULL,
+  `phone` varchar(40) NULL,
+  `email` varchar(40) NULL,
+  `sales_order_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`contact_id`),
+  KEY `fk_sales_order_id` (`sales_order_id`),
+  CONSTRAINT `contact_mapping_ibfk_2` FOREIGN KEY (`sales_order_id`) REFERENCES `sales_order` (`sales_order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE IF NOT EXISTS `cart_item` (
+  `cart_item_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `cart_item_count` int(11) unsigned NOT NULL,
+  `product_id` int(11) unsigned NOT NULL,
+  `sales_order_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`cart_item_id`),
+  KEY `fk_sales_order_id` (`sales_order_id`),
+  KEY `fk_product_id` (`product_id`),
+  CONSTRAINT `cart_item_mapping_ibfk_2` FOREIGN KEY (`sales_order_id`) REFERENCES `sales_order` (`sales_order_id`),
+  CONSTRAINT `cart_item_mapping_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+

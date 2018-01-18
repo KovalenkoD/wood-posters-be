@@ -1,11 +1,37 @@
 package com.woodposters.entity.quote;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name="contact")
 public class Contact {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="contact_id")
+    private long id;
+
+    @Column(name="first_name")
     private String firstName;
+
+    @Column(name="last_name")
     private String lastName;
+
+    @Column(name="comment")
     private String comment;
+
+    @Column(name="phone")
     private String phone;
+
+    @Column(name="email")
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "sales_order_id", nullable = false)
+    @JsonIgnore
+    private SalesOrder salesOrder;
 
     public Contact(){}
 
@@ -55,5 +81,21 @@ public class Contact {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public SalesOrder getSalesOrder() {
+        return salesOrder;
+    }
+
+    public void setSalesOrder(SalesOrder salesOrder) {
+        this.salesOrder = salesOrder;
     }
 }

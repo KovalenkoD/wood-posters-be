@@ -3,6 +3,8 @@ package com.woodposters.service.quote;
 import com.woodposters.entity.product.Product;
 import com.woodposters.entity.quote.CartItem;
 import com.woodposters.entity.quote.SalesOrder;
+import com.woodposters.repository.SalesOrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -11,6 +13,9 @@ import java.util.Set;
 
 @Service
 public class SalesOrderServiceImpl implements SalesOrderService {
+
+    @Autowired
+    private SalesOrderRepository salesOrderRepository;
 
     @Override
     public SalesOrder addOrderToSalesOrder(Product product, SalesOrder salesOrder, int count) {
@@ -26,7 +31,7 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         if(cartItem != null){
             cartItem.setCount(cartItem.getCount() + count);
         } else {
-            cartItem = new CartItem(count, product);
+            cartItem = new CartItem(count, product, salesOrder);
             cartItems.add(cartItem);
         }
 
@@ -67,6 +72,11 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         salesOrder.setFullPrice(0);
         salesOrder.getCartItems().clear();
         return salesOrder;
+    }
+
+    @Override
+    public SalesOrder submitSalesOrder(SalesOrder salesOrder) {
+        return salesOrderRepository.save(salesOrder);
     }
 
     private void recalculateSalesOrderParameters(SalesOrder salesOrder){
