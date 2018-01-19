@@ -7,7 +7,10 @@ import com.woodposters.repository.SalesOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -16,6 +19,9 @@ public class SalesOrderServiceImpl implements SalesOrderService {
 
     @Autowired
     private SalesOrderRepository salesOrderRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public SalesOrder addOrderToSalesOrder(Product product, SalesOrder salesOrder, int count) {
@@ -111,4 +117,11 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         }
         return fullPrice;
     }
+
+    public List<SalesOrder> getSalesOrderByStatus(short status){
+        List<SalesOrder> list = entityManager.createQuery("SELECT salesOrder FROM SalesOrder salesOrder WHERE status=?")
+                .setParameter(1, status).getResultList();
+        return list;
+    }
+
 }

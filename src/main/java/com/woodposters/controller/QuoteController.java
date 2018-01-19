@@ -16,6 +16,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -82,6 +84,16 @@ public class QuoteController {
         salesOrder.setStatus((short) 0);
         salesOrderService.submitSalesOrder(salesOrder);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    @GetMapping("getSalesOrdersByStatus/{status}")
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<List> getSalesOrdersByStatus(@PathVariable("status") short status) {
+        List result = new ArrayList();
+        Iterable<SalesOrder> salesOrders = salesOrderService.getSalesOrderByStatus(status);
+        salesOrders.forEach(salesOrder -> result.add(SalesOrderConverter.convert(salesOrder, wizardState.getLocale())));
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }

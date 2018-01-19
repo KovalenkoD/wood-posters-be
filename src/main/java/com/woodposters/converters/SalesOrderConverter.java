@@ -13,7 +13,9 @@ public class SalesOrderConverter  extends CommonConverter {
         Map<String, Object> result = new HashMap<>();
         result.put("count", salesOrder.getCount());
         result.put("fullPrice", salesOrder.getFullPrice());
-   //     result.put("contact", convertContact(salesOrder.getContact()));
+        result.put("status", salesOrder.getStatus());
+        result.put("id", salesOrder.getId());
+        result.put("contact", convertContact(salesOrder.getContact()));
 
         result.put("cartItems", convertCartItems(salesOrder.getCartItems(), locale));
         return result;
@@ -21,7 +23,9 @@ public class SalesOrderConverter  extends CommonConverter {
 
     private static Map<String, Object> convertContact(Contact contact){
         Map<String, Object> contactMap = new HashMap<>();
-
+        if(contact == null) {
+            return contactMap;
+        }
         contactMap.put("firstName", contact.getFirstName());
         contactMap.put("lastName", contact.getLastName());
         contactMap.put("comment", contact.getComment());
