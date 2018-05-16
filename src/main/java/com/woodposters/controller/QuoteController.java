@@ -77,13 +77,16 @@ public class QuoteController {
     }
 
     @RequestMapping(value = "submitOrder", method = RequestMethod.POST)
-    public ResponseEntity<Void> submitOrder(@RequestBody Contact contact) {
+    public ResponseEntity<Map> submitOrder(@RequestBody Contact contact) {
         SalesOrder salesOrder = wizardState.getSalesOrder();
         contact.setSalesOrder(salesOrder);
         salesOrder.setContact(contact);
         salesOrder.setStatus((short) 0);
         salesOrderService.submitSalesOrder(salesOrder);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        salesOrder = new SalesOrder();
+        wizardState.setSalesOrder(salesOrder);
+        Map result = SalesOrderConverter.convert(salesOrder, wizardState.getLocale());
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
