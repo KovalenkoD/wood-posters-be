@@ -36,9 +36,17 @@ public class WizardController {
     }
 
     @GetMapping("changeLocale/{locale}")
-    public ResponseEntity<Void> addProducts(@PathVariable("locale") String locale) {
+    public ResponseEntity<Void> changeLocale(@PathVariable("locale") String locale) {
         wizardState.setLocale(Locale.valueOf(locale));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    @GetMapping("getCurrentLocale")
+    public ResponseEntity<Map> getCurrentLocale() {
+        Map<String, String> locale = new HashMap<String, String>();
+        locale.put("localeName", wizardState.getLocale().name());
+        return new ResponseEntity<>(locale, HttpStatus.OK);
     }
 
 }
