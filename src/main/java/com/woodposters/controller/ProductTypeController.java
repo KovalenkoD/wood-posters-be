@@ -70,4 +70,10 @@ public class ProductTypeController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @GetMapping("getProductTypeById/{id}")
+    public ResponseEntity<Map> getProductTypeById(@PathVariable("id") Long id) {
+        ProductType productType = productTypeService.findProductType(id);
+        return new ResponseEntity<>(ProductTypeConverter.convert(productType, wizardState.getLocale()), HttpStatus.OK);
+    }
+
 }
