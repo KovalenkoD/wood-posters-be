@@ -57,6 +57,21 @@ public class ProductTypeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Void> update(@RequestBody AdminProductType adminProductType) {
+        productTypeService.updateProductType(adminProductType);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Void> delete(@RequestBody AdminProductType adminProductType) {
+        productTypeService.deleteProductType(adminProductType);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
     @GetMapping("getAllProductTypes")
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<List> getAllProductTypes() {

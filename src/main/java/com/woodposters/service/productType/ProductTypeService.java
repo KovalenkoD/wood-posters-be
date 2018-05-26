@@ -19,5 +19,10 @@ public interface ProductTypeService {
     @Secured({"ROLE_ADMIN"})
     void createProductType(AdminProductType adminProductType);
 
+    @Secured({"ROLE_ADMIN"})
+    void updateProductType(AdminProductType adminProductType);
+
+    @Secured({"ROLE_ADMIN"})
+    void deleteProductType(AdminProductType adminProductType);
 }
 
