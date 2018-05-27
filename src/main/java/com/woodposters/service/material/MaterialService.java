@@ -17,5 +17,13 @@ public interface MaterialService {
 
     @Secured({"ROLE_ADMIN"})
     void createMaterial(AdminBaseNameObject adminBaseNameObject);
+
+    @Secured({"ROLE_ADMIN"})
+    void updateMaterial(AdminBaseNameObject adminBaseNameObject);
+
+    @Secured({"ROLE_ADMIN"})
+    void deleteMaterial(AdminBaseNameObject adminBaseNameObject);
+
+
 }
 

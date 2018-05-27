@@ -13,6 +13,7 @@ import com.woodposters.repository.CategoryRepository;
 import com.woodposters.repository.MaterialRepository;
 import com.woodposters.repository.ProductTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -49,6 +50,35 @@ public class MaterialServiceImpl implements MaterialService {
         material.setMaterialNames(materialNames);
         materialRepository.save(material);
     }
+
+    @Override
+    public void deleteMaterial(AdminBaseNameObject adminBaseNameObject) {
+        materialRepository.delete(adminBaseNameObject.getId());
+    }
+
+    @Override
+    public void updateMaterial(AdminBaseNameObject adminBaseNameObject) {
+        Material material = materialRepository.findOne(adminBaseNameObject.getId());
+        Set<MaterialName> materialNames = material.getMaterialNames();
+        findAndUpdateMaterialName(Locale.English, materialNames, adminBaseNameObject.getNameEN(), material);
+        findAndUpdateMaterialName(Locale.Russian, materialNames, adminBaseNameObject.getNameRU(), material);
+        findAndUpdateMaterialName(Locale.Ukraine, materialNames, adminBaseNameObject.getNameUA(), material);
+        material.setMaterialNames(materialNames);
+        materialRepository.save(material);
+    }
+
+    private MaterialName findAndUpdateMaterialName(Locale locale, Set<MaterialName> materialNames, String name, Material material) {
+        for (MaterialName materialName : materialNames) {
+            if(locale.equals(materialName.getLocale())){
+                materialName.setName(name);
+                return materialName;
+            }
+        }
+        MaterialName materialName = new MaterialName(name,  locale, material);
+        materialNames.add(materialName);
+        return materialName;
+    }
+
 
     private Set<MaterialName> createMaterialNames(AdminBaseNameObject adminBaseNameObject, Material material){
         MaterialName materialNameEN = new MaterialName(adminBaseNameObject.getNameEN(),  Locale.English, material);

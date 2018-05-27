@@ -50,6 +50,20 @@ public class MaterialController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Void> update(@RequestBody AdminBaseNameObject adminBaseNameObject) {
+        materialService.updateMaterial(adminBaseNameObject);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Void> delete(@RequestBody AdminBaseNameObject adminBaseNameObject) {
+        materialService.deleteMaterial(adminBaseNameObject);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("getAllMaterialsAdmin")
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<List> getAllMaterialsAdmin() {

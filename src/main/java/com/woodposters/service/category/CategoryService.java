@@ -17,5 +17,10 @@ public interface CategoryService {
     @Secured({"ROLE_ADMIN"})
     void createCategory(AdminBaseNameObject adminBaseNameObject);
 
+    @Secured({"ROLE_ADMIN"})
+    void updateCategory(AdminBaseNameObject adminBaseNameObject);
+
+    @Secured({"ROLE_ADMIN"})
+    void deleteCategory(AdminBaseNameObject adminBaseNameObject);
 }
 

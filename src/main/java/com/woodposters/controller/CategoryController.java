@@ -56,6 +56,20 @@ public class CategoryController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Void> update(@RequestBody AdminBaseNameObject adminBaseNameObject) {
+        categoryService.updateCategory(adminBaseNameObject);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Void> delete(@RequestBody AdminBaseNameObject adminBaseNameObject) {
+        categoryService.deleteCategory(adminBaseNameObject);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("getAllCategoriesAdmin")
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<List> getAllCategoriesAdmin() {

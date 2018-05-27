@@ -48,6 +48,34 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
     }
 
+    @Override
+    public void deleteCategory(AdminBaseNameObject adminBaseNameObject) {
+        categoryRepository.delete(adminBaseNameObject.getId());
+    }
+
+    @Override
+    public void updateCategory(AdminBaseNameObject adminBaseNameObject) {
+        Category category = categoryRepository.findOne(adminBaseNameObject.getId());
+        Set<CategoryName> categoryNames = category.getCategoryNames();
+        findAndUpdateCategoryName(Locale.English, categoryNames, adminBaseNameObject.getNameEN(), category);
+        findAndUpdateCategoryName(Locale.Russian, categoryNames, adminBaseNameObject.getNameRU(), category);
+        findAndUpdateCategoryName(Locale.Ukraine, categoryNames, adminBaseNameObject.getNameUA(), category);
+        category.setCategoryNames(categoryNames);
+        categoryRepository.save(category);
+    }
+
+    private CategoryName findAndUpdateCategoryName(Locale locale, Set<CategoryName> categoryNames, String name, Category category) {
+        for (CategoryName categoryName : categoryNames) {
+            if(locale.equals(categoryName.getLocale())){
+                categoryName.setName(name);
+                return categoryName;
+            }
+        }
+        CategoryName categoryName = new CategoryName(name,  locale, category);
+        categoryNames.add(categoryName);
+        return categoryName;
+    }
+
     private Set<CategoryName> createCategoryNames(AdminBaseNameObject adminBaseNameObject, Category category){
         CategoryName categoryNameEN = new CategoryName(adminBaseNameObject.getNameEN(),  Locale.English, category);
         CategoryName categoryNameRU = new CategoryName(adminBaseNameObject.getNameRU(), Locale.Russian, category);
