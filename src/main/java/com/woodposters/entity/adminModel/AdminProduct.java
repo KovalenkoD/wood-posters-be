@@ -21,8 +21,31 @@ public class AdminProduct {
     private short imagePresentation;
     private Set<String> images;
     private String image;
+    private String bundleImage;
 
     public AdminProduct(){}
+
+    public AdminProduct(long id, String russianName, String englishName, String ukrainianName, double price, boolean isBundle, String size, Set<Long> technologyIDs, String russianDescription, String englishDescription, String ukrainianDescription, Set<Long> categoryIDs, Long productTypeID, Set<Long> materialIDs, short popular, short imagePresentation, Set<String> images, String image, String bundleImage) {
+        this.id = id;
+        this.russianName = russianName;
+        this.englishName = englishName;
+        this.ukrainianName = ukrainianName;
+        this.price = price;
+        this.isBundle = isBundle;
+        this.size = size;
+        this.technologyIDs = technologyIDs;
+        this.russianDescription = russianDescription;
+        this.englishDescription = englishDescription;
+        this.ukrainianDescription = ukrainianDescription;
+        this.categoryIDs = categoryIDs;
+        this.productTypeID = productTypeID;
+        this.materialIDs = materialIDs;
+        this.popular = popular;
+        this.imagePresentation = imagePresentation;
+        this.images = images;
+        this.image = image;
+        this.bundleImage = bundleImage;
+    }
 
     public AdminProduct(long id, String russianName, String englishName, String ukrainianName, double price, boolean isBundle, String size, Set<Long> technologyIDs, String russianDescription, String englishDescription, String ukrainianDescription, Set<Long> categoryIDs, Long productTypeID, Set<Long> materialIDs, short popular, short imagePresentation, Set<String> images, String image) {
         this.id = id;
@@ -187,5 +210,13 @@ public class AdminProduct {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getBundleImage() {
+        return bundleImage;
+    }
+
+    public void setBundleImage(String bundleImage) {
+        this.bundleImage = bundleImage;
     }
 }
