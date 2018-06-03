@@ -107,4 +107,11 @@ public class ProductsController {
         productService.createProduct(adminProduct);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @RequestMapping(value = "createBundle", method = RequestMethod.POST)
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Void> createBundle(@RequestBody AdminProduct adminProduct) {
+        productService.createBundle(adminProduct);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

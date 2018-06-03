@@ -22,8 +22,32 @@ public class AdminProduct {
     private Set<String> images;
     private String image;
     private String bundleImage;
+    private Set<AdminBundleProductItem> bundleProductItems;
 
     public AdminProduct(){}
+
+    public AdminProduct(long id, String russianName, String englishName, String ukrainianName, double price, boolean isBundle, String size, Set<Long> technologyIDs, String russianDescription, String englishDescription, String ukrainianDescription, Set<Long> categoryIDs, Long productTypeID, Set<Long> materialIDs, short popular, short imagePresentation, Set<String> images, String image, String bundleImage, Set<AdminBundleProductItem> bundleProductItems) {
+        this.id = id;
+        this.russianName = russianName;
+        this.englishName = englishName;
+        this.ukrainianName = ukrainianName;
+        this.price = price;
+        this.isBundle = isBundle;
+        this.size = size;
+        this.technologyIDs = technologyIDs;
+        this.russianDescription = russianDescription;
+        this.englishDescription = englishDescription;
+        this.ukrainianDescription = ukrainianDescription;
+        this.categoryIDs = categoryIDs;
+        this.productTypeID = productTypeID;
+        this.materialIDs = materialIDs;
+        this.popular = popular;
+        this.imagePresentation = imagePresentation;
+        this.images = images;
+        this.image = image;
+        this.bundleImage = bundleImage;
+        this.bundleProductItems = bundleProductItems;
+    }
 
     public AdminProduct(long id, String russianName, String englishName, String ukrainianName, double price, boolean isBundle, String size, Set<Long> technologyIDs, String russianDescription, String englishDescription, String ukrainianDescription, Set<Long> categoryIDs, Long productTypeID, Set<Long> materialIDs, short popular, short imagePresentation, Set<String> images, String image, String bundleImage) {
         this.id = id;
@@ -218,5 +242,13 @@ public class AdminProduct {
 
     public void setBundleImage(String bundleImage) {
         this.bundleImage = bundleImage;
+    }
+
+    public Set<AdminBundleProductItem> getBundleProductItems() {
+        return bundleProductItems;
+    }
+
+    public void setBundleProductItems(Set<AdminBundleProductItem> bundleProductItems) {
+        this.bundleProductItems = bundleProductItems;
     }
 }

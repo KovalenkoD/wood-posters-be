@@ -2,6 +2,7 @@ package com.woodposters.service.product;
 
 import com.google.common.collect.Sets;
 import com.woodposters.beans.Locale;
+import com.woodposters.entity.adminModel.AdminBundleProductItem;
 import com.woodposters.entity.adminModel.AdminProduct;
 import com.woodposters.entity.category.Category;
 import com.woodposters.entity.category.CategoryName;
@@ -255,6 +256,41 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void createBundle(AdminProduct adminProduct) {
+        Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));
+        Set<Material> materials = Sets.newHashSet(materialRepository.findAll(adminProduct.getMaterialIDs()));
+        Set<Technology> technologies = Sets.newHashSet(technologyRepository.findAll(adminProduct.getTechnologyIDs()));
+
+        ProductType productType = productTypeRepository.findOne(adminProduct.getProductTypeID());
+
+        BundleProduct bundleProduct = (BundleProduct) createProduct(adminProduct.getRussianName(), adminProduct.getEnglishName(), adminProduct.getUkrainianName(),
+                adminProduct.getPrice(), true, adminProduct.getSize(),technologies,
+                adminProduct.getRussianDescription(), adminProduct.getEnglishDescription(), adminProduct.getUkrainianDescription(),
+                categories, productType, materials, adminProduct.getPopular(),
+                adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage());
+
+        bundleProduct.setBundleImage(adminProduct.getBundleImage());
+
+        createBundleChildItems(bundleProduct, adminProduct);
+
+        productRepository.save(bundleProduct);
+    }
+
+    private void createBundleChildItems(BundleProduct bundleProduct, AdminProduct adminProduct){
+        Set<BundleChildProduct> bundleChildProducts = new HashSet<>();
+        adminProduct.getBundleProductItems().forEach(adminBundleProductItem -> {
+            Product product = productRepository.findOne(adminBundleProductItem.getProductId().longValue());
+            BundleChildProduct bundleChildProduct = new BundleChildProduct();
+            bundleChildProduct.setBundleProduct(bundleProduct);
+            bundleChildProduct.setProduct(product);
+            bundleChildProduct.setX_coordinate(adminBundleProductItem.getxCoordinate());
+            bundleChildProduct.setY_coordinate(adminBundleProductItem.getyCoordinate());
+            bundleChildProducts.add(bundleChildProduct);
+        });
+        bundleProduct.setBundleChildProducts(bundleChildProducts);
+    }
+
+    @Override
     public void deleteProduct(Long id) {
         productRepository.delete(id);
     }
@@ -308,11 +344,12 @@ public class ProductServiceImpl implements ProductService {
         Set<Technology> technologies = Sets.newHashSet(technologyRepository.findAll(adminProduct.getTechnologyIDs()));
 
         ProductType productType = productTypeRepository.findOne(adminProduct.getProductTypeID());
-        createProduct(adminProduct.getRussianName(), adminProduct.getEnglishName(), adminProduct.getUkrainianName(),
+        Product product = createProduct(adminProduct.getRussianName(), adminProduct.getEnglishName(), adminProduct.getUkrainianName(),
                 adminProduct.getPrice(), adminProduct.isBundle(), adminProduct.getSize(),technologies,
                 adminProduct.getRussianDescription(), adminProduct.getEnglishDescription(), adminProduct.getUkrainianDescription(),
                 categories, productType, materials, adminProduct.getPopular(),
                 adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage());
+        productRepository.save(product);
     }
 
     private Product createProduct(String russianName, String englishName, String ukrainianName,
@@ -343,7 +380,6 @@ public class ProductServiceImpl implements ProductService {
             product.setImages(productImages);
         }
 
-        productRepository.save(product);
 
         return product;
     }
