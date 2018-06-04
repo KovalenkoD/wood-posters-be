@@ -45,7 +45,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
     @Override
     public void createProductType(AdminProductType adminProductType) {
-        createProductType(adminProductType.getNameRU(), adminProductType.getNameEN(), adminProductType.getNameUA(), adminProductType.getImageURL(), (short) 1);
+        createProductType(adminProductType.getNameRU(), adminProductType.getNameEN(), adminProductType.getNameUA(), adminProductType.getImageURL(), adminProductType.getVisible());
     }
 
     @Override
@@ -58,6 +58,8 @@ public class ProductTypeServiceImpl implements ProductTypeService {
         findAndUpdateProductType(Locale.English, productTypeNames, adminProductType.getNameEN(), productType);
         findAndUpdateProductType(Locale.Russian, productTypeNames, adminProductType.getNameRU(), productType);
         findAndUpdateProductType(Locale.Ukraine, productTypeNames, adminProductType.getNameUA(), productType);
+
+        productType.setVisible(adminProductType.getVisible());
 
         productTypeRepository.save(productType);
     }

@@ -6,15 +6,33 @@ public class AdminProductType {
     private String nameEN;
     private String nameUA;
     private String imageURL;
+    private short visible;
 
     public AdminProductType() {}
-    
+
+    public AdminProductType(long id, String nameRU, String nameEN, String nameUA, String imageURL, short visible) {
+        this.id = id;
+        this.nameRU = nameRU;
+        this.nameEN = nameEN;
+        this.nameUA = nameUA;
+        this.imageURL = imageURL;
+        this.visible = visible;
+    }
+
     public AdminProductType(long id, String nameRU, String nameEN, String nameUA, String imageURL) {
         this.id = id;
         this.nameRU = nameRU;
         this.nameEN = nameEN;
         this.nameUA = nameUA;
         this.imageURL = imageURL;
+    }
+
+    public short getVisible() {
+        return visible;
+    }
+
+    public void setVisible(short visible) {
+        this.visible = visible;
     }
 
     public long getId() {
