@@ -1,7 +1,9 @@
 package com.woodposters.controller;
 
+import com.woodposters.beans.Locale;
 import com.woodposters.beans.WizardState;
 import com.woodposters.converters.BundleConverter;
+import com.woodposters.converters.CommonConverter;
 import com.woodposters.converters.ProductConverter;
 import com.woodposters.entity.adminModel.AdminProduct;
 import com.woodposters.entity.adminModel.AdminProductType;
@@ -73,6 +75,33 @@ public class ProductsController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @GetMapping("getAdminProductById/{id}")
+    public ResponseEntity<AdminProduct> getAdminProductById(@PathVariable("id") Long id) {
+        Product product = productRepository.findOne(id);
+        AdminProduct adminProduct = new AdminProduct(product.getId(),
+                CommonConverter.getStringFromLocaleNameObjects(product.getProductNames(), Locale.Russian),
+                CommonConverter.getStringFromLocaleNameObjects(product.getProductNames(), Locale.English),
+                CommonConverter.getStringFromLocaleNameObjects(product.getProductNames(), Locale.Ukraine),
+                product.getPrice(),
+                false,
+                product.getSize(),
+                CommonConverter.convertTechnologySetToIntIDs(product.getTechnologies()),
+                CommonConverter.getStringFromLocaleDescriptionObjects(product.getProductDescriptions(), Locale.Russian),
+                CommonConverter.getStringFromLocaleDescriptionObjects(product.getProductDescriptions(), Locale.English),
+                CommonConverter.getStringFromLocaleDescriptionObjects(product.getProductDescriptions(), Locale.Ukraine),
+                CommonConverter.convertCategoriesSetToIntIDs(product.getCategories()),
+                product.getProductType().getId(),
+                CommonConverter.convertMaterialsSetToIntIDs(product.getMaterials()),
+                product.getPopular(),
+                product.getImagePresentation(),
+                CommonConverter.convertProductImagesToImages(product.getImages()),
+                product.getImage()
+                );
+        return new ResponseEntity<>(adminProduct, HttpStatus.OK);
+
+
+    }
+
     @GetMapping("getMostPopularProducts/{discriminator}/{popular}")
     public ResponseEntity<List> getMostPopularProducts(@PathVariable("discriminator") String discriminator, @PathVariable("popular") short popular ) {
         List<Product> products = productService.getMostPopularProducts(discriminator, popular);
@@ -105,6 +134,13 @@ public class ProductsController {
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<Void> create(@RequestBody AdminProduct adminProduct) {
         productService.createProduct(adminProduct);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Void> update(@RequestBody AdminProduct adminProduct) {
+        //update
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
