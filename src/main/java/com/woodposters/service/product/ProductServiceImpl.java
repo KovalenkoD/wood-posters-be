@@ -2,6 +2,7 @@ package com.woodposters.service.product;
 
 import com.google.common.collect.Sets;
 import com.woodposters.beans.Locale;
+import com.woodposters.entity.adminModel.AdminBaseNameObject;
 import com.woodposters.entity.adminModel.AdminBundleProductItem;
 import com.woodposters.entity.adminModel.AdminProduct;
 import com.woodposters.entity.category.Category;
@@ -397,5 +398,97 @@ public class ProductServiceImpl implements ProductService {
         ProductDescription productDescriptionUA= new ProductDescription(ukrainianDescription,  Locale.Ukraine, product);
         product.setProductDescriptions(new HashSet<>(Arrays.asList(productDescriptionRU, productDescriptionEN, productDescriptionUA)));
     }
+
+    @Override
+    public void updateProduct(AdminProduct adminProduct) {
+        Product product = productRepository.findOne(adminProduct.getId());
+        updateProductNames(product, adminProduct);
+        updateProductDescriptions(product, adminProduct);
+
+        product.setPrice(adminProduct.getPrice());
+        product.setSize(adminProduct.getSize());
+        product.setPopular(adminProduct.getPopular());
+        product.setImagePresentation(adminProduct.getImagePresentation());
+        product.setImage(adminProduct.getImage());
+
+
+        Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));
+        Set<Material> materials = Sets.newHashSet(materialRepository.findAll(adminProduct.getMaterialIDs()));
+        Set<Technology> technologies = Sets.newHashSet(technologyRepository.findAll(adminProduct.getTechnologyIDs()));
+        ProductType productType = productTypeRepository.findOne(adminProduct.getProductTypeID());
+
+
+        product.setCategories(categories);
+        product.setMaterials(materials);
+        product.setTechnologies(technologies);
+        product.setProductType(productType);
+
+        updateProductImages(product, adminProduct.getImages());
+
+        productRepository.save(product);
+    }
+
+    private void updateProductImages(Product product, Set<String> images){
+        Set<ProductImage> updatedProductImages = new HashSet<>();
+        Set<ProductImage> productImages = product.getImages();
+        Iterator<String> imagesIterator = images.iterator();
+        Iterator<ProductImage> productImagesIterator = productImages.iterator();
+
+        while (imagesIterator.hasNext()){
+            String image = imagesIterator.next();
+            ProductImage updatedProductImage;
+            if(productImagesIterator.hasNext()){
+                ProductImage productImage = productImagesIterator.next();
+                productImage.setImage(image);
+                updatedProductImage = productImage;
+            } else {
+                updatedProductImage = new ProductImage(image, product);
+            }
+            updatedProductImages.add(updatedProductImage);
+        }
+        product.setImages(updatedProductImages);
+    }
+
+    private void updateProductNames(Product product, AdminProduct adminProduct){
+        Set<ProductName> productNames = product.getProductNames();
+        findAndUpdateProductName(Locale.English, productNames, adminProduct.getEnglishName(), product);
+        findAndUpdateProductName(Locale.Russian, productNames, adminProduct.getRussianName(), product);
+        findAndUpdateProductName(Locale.Ukraine, productNames, adminProduct.getUkrainianName(), product);
+    }
+
+
+    private ProductName findAndUpdateProductName(Locale locale, Set<ProductName> productNames, String name, Product product) {
+        for(ProductName productName:productNames){
+            if(locale.equals(productName.getLocale())){
+                productName.setName(name);
+                return productName;
+            }
+        }
+        ProductName productName = new ProductName(name,  locale, product);
+        productNames.add(productName);
+        return productName;
+    }
+
+
+    private void updateProductDescriptions(Product product, AdminProduct adminProduct){
+        Set<ProductDescription> productDescriptions = product.getProductDescriptions();
+        findAndUpdateProductDescription(Locale.English, productDescriptions, adminProduct.getEnglishDescription(), product);
+        findAndUpdateProductDescription(Locale.Russian, productDescriptions, adminProduct.getRussianDescription(), product);
+        findAndUpdateProductDescription(Locale.Ukraine, productDescriptions, adminProduct.getUkrainianDescription(), product);
+    }
+
+
+    private ProductDescription findAndUpdateProductDescription(Locale locale, Set<ProductDescription> productDescriptions, String descriptrion, Product product) {
+        for(ProductDescription productDescription:productDescriptions){
+            if(locale.equals(productDescription.getLocale())){
+                productDescription.setDescription(descriptrion);
+                return productDescription;
+            }
+        }
+        ProductDescription productDescription = new ProductDescription(descriptrion,  locale, product);
+        productDescriptions.add(productDescription);
+        return productDescription;
+    }
+
 
 }

@@ -140,7 +140,7 @@ public class ProductsController {
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<Void> update(@RequestBody AdminProduct adminProduct) {
-        //update
+        productService.updateProduct(adminProduct);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

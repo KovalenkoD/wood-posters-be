@@ -30,6 +30,8 @@ public interface ProductService {
     @Secured({"ROLE_ADMIN"})
     void createProduct(AdminProduct adminProduct);
 
+    @Secured({"ROLE_ADMIN"})
+    void updateProduct(AdminProduct adminProduct);
 
     @Secured({"ROLE_ADMIN"})
     void createBundle(AdminProduct adminProduct);
