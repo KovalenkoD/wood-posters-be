@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `product_image` (
 CREATE TABLE IF NOT EXISTS `product_description` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `product_id` int(11) unsigned NOT NULL,
-  `description` varchar(350) NOT NULL,
+  `description` varchar(900) NOT NULL,
   `locale` varchar(10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`),
