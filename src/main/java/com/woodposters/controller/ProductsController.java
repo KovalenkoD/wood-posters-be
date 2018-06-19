@@ -95,7 +95,9 @@ public class ProductsController {
                 product.getPopular(),
                 product.getImagePresentation(),
                 CommonConverter.convertProductImagesToImages(product.getImages()),
-                product.getImage()
+                product.getImage(),
+                product.getBackground(),
+                product.getArticul()
                 );
         return new ResponseEntity<>(adminProduct, HttpStatus.OK);
 

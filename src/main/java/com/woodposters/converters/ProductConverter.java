@@ -32,6 +32,8 @@ public class ProductConverter extends CommonConverter {
         convertMap.put("materials", convertMaterials(product.getMaterials(), locale));
         convertMap.put("images", convertImages(product.getImages()));
         convertMap.put("imagePresentation", product.getImagePresentation());
+        convertMap.put("background", product.getBackground());
+        convertMap.put("articul", product.getArticul());
 
         return convertMap;
     }

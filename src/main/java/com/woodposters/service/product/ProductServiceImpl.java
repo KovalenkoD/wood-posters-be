@@ -204,6 +204,8 @@ public class ProductServiceImpl implements ProductService {
         product.setMaterials(materials);
         product.setCreatedDate(currentDate);
         product.setImage(image);
+        product.setArticul("#342ddfsdf");
+        product.setBackground("#4653b6");
         product.setPopular(popular);
 
         if(images != null){
@@ -233,6 +235,8 @@ public class ProductServiceImpl implements ProductService {
         bundleProduct.setCreatedDate(currentDate);
         bundleProduct.setBundleImage(image);
         bundleProduct.setImage(image);
+        bundleProduct.setArticul("#342ddfsdf");
+        bundleProduct.setBackground("#4653b6");
         bundleProduct.setImagePresentation(imagePresentation);
 
         Set<BundleChildProduct> bundleChildProducts = new HashSet<>();
@@ -268,7 +272,7 @@ public class ProductServiceImpl implements ProductService {
                 adminProduct.getPrice(), true, adminProduct.getSize(),technologies,
                 adminProduct.getRussianDescription(), adminProduct.getEnglishDescription(), adminProduct.getUkrainianDescription(),
                 categories, productType, materials, adminProduct.getPopular(),
-                adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage());
+                adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage(), adminProduct.getBackground(), adminProduct.getArticul());
 
         bundleProduct.setBundleImage(adminProduct.getBundleImage());
 
@@ -349,7 +353,7 @@ public class ProductServiceImpl implements ProductService {
                 adminProduct.getPrice(), adminProduct.isBundle(), adminProduct.getSize(),technologies,
                 adminProduct.getRussianDescription(), adminProduct.getEnglishDescription(), adminProduct.getUkrainianDescription(),
                 categories, productType, materials, adminProduct.getPopular(),
-                adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage());
+                adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage(),  adminProduct.getBackground(), adminProduct.getArticul());
         productRepository.save(product);
     }
 
@@ -357,7 +361,7 @@ public class ProductServiceImpl implements ProductService {
                                   double price, boolean isBundle, String size, Set<Technology> technologies,
                                   String russianDescription, String englishDescription, String ukrainianDescription,
                                   Set<Category> categories, ProductType productType, Set<Material> materials, short popular,
-                                  short imagePresentation, Set<String> images, String image){
+                                  short imagePresentation, Set<String> images, String image, String background, String articul){
 
         Product product = isBundle ? new BundleProduct() : new Product();
         Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -374,6 +378,8 @@ public class ProductServiceImpl implements ProductService {
         product.setCreatedDate(currentDate);
         product.setImage(image);
         product.setPopular(popular);
+        product.setArticul(articul);
+        product.setBackground(background);
 
         if(images != null){
             Set<ProductImage> productImages = new HashSet<>();
@@ -410,6 +416,9 @@ public class ProductServiceImpl implements ProductService {
         product.setPopular(adminProduct.getPopular());
         product.setImagePresentation(adminProduct.getImagePresentation());
         product.setImage(adminProduct.getImage());
+
+        product.setArticul(adminProduct.getArticul());
+        product.setBackground(adminProduct.getBackground());
 
 
         Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));

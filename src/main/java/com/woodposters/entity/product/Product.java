@@ -56,6 +56,12 @@ public class Product implements Serializable {
     @Column(name="image")
     private String image;
 
+    @Column(name="background")
+    private String background;
+
+    @Column(name="articul")
+    private String articul;
+
     @Column(name="status")
     private short status;
 
@@ -257,6 +263,22 @@ public class Product implements Serializable {
 
     public void setImages(Set<ProductImage> images) {
         this.images = images;
+    }
+
+    public String getBackground() {
+        return background;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
+    }
+
+    public String getArticul() {
+        return articul;
+    }
+
+    public void setArticul(String articul) {
+        this.articul = articul;
     }
 
     @Override

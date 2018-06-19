@@ -21,6 +21,8 @@ public class AdminProduct {
     private short imagePresentation;
     private Set<String> images;
     private String image;
+    private String background;
+    private String articul;
     private String bundleImage;
     private Set<AdminBundleProductItem> bundleProductItems;
 
@@ -71,7 +73,10 @@ public class AdminProduct {
         this.bundleImage = bundleImage;
     }
 
-    public AdminProduct(long id, String russianName, String englishName, String ukrainianName, double price, boolean isBundle, String size, Set<Long> technologyIDs, String russianDescription, String englishDescription, String ukrainianDescription, Set<Long> categoryIDs, Long productTypeID, Set<Long> materialIDs, short popular, short imagePresentation, Set<String> images, String image) {
+    public AdminProduct(long id, String russianName, String englishName, String ukrainianName, double price, boolean isBundle,
+                        String size, Set<Long> technologyIDs, String russianDescription, String englishDescription, String ukrainianDescription,
+                        Set<Long> categoryIDs, Long productTypeID, Set<Long> materialIDs, short popular, short imagePresentation, Set<String> images,
+                        String image, String background, String articul) {
         this.id = id;
         this.russianName = russianName;
         this.englishName = englishName;
@@ -90,6 +95,8 @@ public class AdminProduct {
         this.imagePresentation = imagePresentation;
         this.images = images;
         this.image = image;
+        this.background = background;
+        this.articul = articul;
     }
 
     public long getId() {
@@ -250,5 +257,21 @@ public class AdminProduct {
 
     public void setBundleProductItems(Set<AdminBundleProductItem> bundleProductItems) {
         this.bundleProductItems = bundleProductItems;
+    }
+
+    public String getArticul() {
+        return articul;
+    }
+
+    public void setArticul(String articul) {
+        this.articul = articul;
+    }
+
+    public String getBackground() {
+        return background;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
     }
 }
