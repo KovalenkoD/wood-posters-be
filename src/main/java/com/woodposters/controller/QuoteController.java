@@ -3,10 +3,12 @@ package com.woodposters.controller;
 import com.woodposters.beans.WizardState;
 import com.woodposters.converters.ProductConverter;
 import com.woodposters.converters.SalesOrderConverter;
+import com.woodposters.entity.adminModel.AdminProduct;
 import com.woodposters.entity.adminModel.AdminProductType;
 import com.woodposters.entity.product.Product;
 import com.woodposters.entity.quote.Contact;
 import com.woodposters.entity.quote.SalesOrder;
+import com.woodposters.entity.quote.SalesOrderIdAndStatus;
 import com.woodposters.repository.ProductRepository;
 import com.woodposters.service.quote.SalesOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,8 +97,20 @@ public class QuoteController {
     public ResponseEntity<List> getSalesOrdersByStatus(@PathVariable("status") short status) {
         List result = new ArrayList();
         Iterable<SalesOrder> salesOrders = salesOrderService.getSalesOrderByStatus(status);
-        salesOrders.forEach(salesOrder -> result.add(SalesOrderConverter.convert(salesOrder, wizardState.getLocale())));
+        salesOrders.forEach(salesOrder -> {
+            salesOrder.setFullPrice(salesOrderService.recalculatePrice(salesOrder));
+            result.add(SalesOrderConverter.convert(salesOrder, wizardState.getLocale()));
+        });
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "changeSalesOrderStatus", method = RequestMethod.POST)
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Void> changeSalesOrderStatus(@RequestBody SalesOrderIdAndStatus salesOrderIdAndStatus) {
+
+       salesOrderService.changeSalesOrderStatus(salesOrderIdAndStatus.getSalesOrderId(), salesOrderIdAndStatus.getStatus());
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

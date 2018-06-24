@@ -85,6 +85,15 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         return salesOrderRepository.save(salesOrder);
     }
 
+    @Override
+    public SalesOrder changeSalesOrderStatus(long salesOrderId, short status) {
+        SalesOrder salesOrder = salesOrderRepository.findOne(salesOrderId);
+        salesOrder.setStatus(status);
+        salesOrder = salesOrderRepository.save(salesOrder);
+
+        return salesOrder;
+    }
+
     private void recalculateSalesOrderParameters(SalesOrder salesOrder){
         double recalculatedFullPrice = recalculatePrice(salesOrder);
         salesOrder.setFullPrice(recalculatedFullPrice);
@@ -110,7 +119,8 @@ public class SalesOrderServiceImpl implements SalesOrderService {
         return count;
     }
 
-    private double recalculatePrice(SalesOrder salesOrder){
+    @Override
+    public double recalculatePrice(SalesOrder salesOrder){
         double fullPrice = 0;
         for (CartItem cartItem : salesOrder.getCartItems()){
             fullPrice += cartItem.calculatedPrice();

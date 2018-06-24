@@ -17,6 +17,10 @@ public interface SalesOrderService {
 
      SalesOrder submitSalesOrder(SalesOrder salesOrder);
 
+     SalesOrder changeSalesOrderStatus(long salesOrderId, short status);
+
+     double recalculatePrice(SalesOrder salesOrder);
+
      @Secured({"ROLE_ADMIN"})
      List<SalesOrder> getSalesOrderByStatus(short status);
 
