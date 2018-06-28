@@ -32,12 +32,20 @@ public class ProductType implements Serializable {
     @Column(name="image")
     private String image;
 
+    @Column(name="background")
+    private String background;
+
     public ProductType(){}
 
     public ProductType(Set<ProductTypeName> productTypeNames, Set<Product> products, String image) {
+        this(productTypeNames, products, image, null);
+    }
+
+    public ProductType(Set<ProductTypeName> productTypeNames, Set<Product> products, String image, String background) {
         this.productTypeNames = productTypeNames;
         this.products = products;
         this.image = image;
+        this.background = background;
     }
 
     public long getId() {
@@ -78,5 +86,13 @@ public class ProductType implements Serializable {
 
     public void setVisible(short visible) {
         this.visible = visible;
+    }
+
+    public String getBackground() {
+        return background;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
     }
 }

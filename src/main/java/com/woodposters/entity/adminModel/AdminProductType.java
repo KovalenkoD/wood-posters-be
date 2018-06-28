@@ -6,25 +6,27 @@ public class AdminProductType {
     private String nameEN;
     private String nameUA;
     private String imageURL;
+    private String background;
     private short visible;
 
     public AdminProductType() {}
 
     public AdminProductType(long id, String nameRU, String nameEN, String nameUA, String imageURL, short visible) {
-        this.id = id;
-        this.nameRU = nameRU;
-        this.nameEN = nameEN;
-        this.nameUA = nameUA;
-        this.imageURL = imageURL;
-        this.visible = visible;
+      this(id, nameRU, nameEN, nameUA, imageURL, null, visible);
     }
 
     public AdminProductType(long id, String nameRU, String nameEN, String nameUA, String imageURL) {
+        this(id, nameRU, nameEN, nameUA, imageURL, (short) 0);
+    }
+
+    public AdminProductType(long id, String nameRU, String nameEN, String nameUA, String imageURL, String background, short visible) {
         this.id = id;
         this.nameRU = nameRU;
         this.nameEN = nameEN;
         this.nameUA = nameUA;
         this.imageURL = imageURL;
+        this.background = background;
+        this.visible = visible;
     }
 
     public short getVisible() {
@@ -73,5 +75,13 @@ public class AdminProductType {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public String getBackground() {
+        return background;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
     }
 }

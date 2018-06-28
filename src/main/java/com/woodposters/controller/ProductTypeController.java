@@ -82,6 +82,7 @@ public class ProductTypeController {
                 CommonConverter.getStringFromLocaleNameObjects(productType.getProductTypeNames(), Locale.English),
                 CommonConverter.getStringFromLocaleNameObjects(productType.getProductTypeNames(), Locale.Ukraine),
                 productType.getImage(),
+                productType.getBackground(),
                 productType.getVisible())));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

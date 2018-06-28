@@ -13,6 +13,7 @@ public class ProductTypeConverter  extends CommonConverter{
         convertMap.put("id", productType.getId());
         convertMap.put("name", getStringFromLocaleNameObjects(productType.getProductTypeNames(), locale));
         convertMap.put("image", productType.getImage());
+        convertMap.put("background", productType.getBackground());
         return convertMap;
     }
 }

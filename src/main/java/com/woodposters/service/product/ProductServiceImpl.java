@@ -87,6 +87,7 @@ public class ProductServiceImpl implements ProductService {
         ProductTypeName productNameRU = new ProductTypeName(russianName, Locale.Russian, productType);
         productType.setProductTypeNames(new HashSet<>(Arrays.asList(productNameEN, productNameRU)));
         productType.setVisible(visible);
+        productType.setBackground("#4653b6");
         productType.setImage(image);
         productTypeRepository.save(productType);
         return productType;

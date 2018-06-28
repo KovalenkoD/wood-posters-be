@@ -45,7 +45,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
     @Override
     public void createProductType(AdminProductType adminProductType) {
-        createProductType(adminProductType.getNameRU(), adminProductType.getNameEN(), adminProductType.getNameUA(), adminProductType.getImageURL(), adminProductType.getVisible());
+        createProductType(adminProductType.getNameRU(), adminProductType.getNameEN(), adminProductType.getNameUA(), adminProductType.getImageURL(), adminProductType.getBackground(), adminProductType.getVisible());
     }
 
     @Override
@@ -60,6 +60,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
         findAndUpdateProductType(Locale.Ukraine, productTypeNames, adminProductType.getNameUA(), productType);
 
         productType.setVisible(adminProductType.getVisible());
+        productType.setBackground(adminProductType.getBackground());
 
         productTypeRepository.save(productType);
     }
@@ -82,7 +83,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     }
 
 
-    private ProductType createProductType(String russianName, String englishName, String ukrainianName, String image, short visible){
+    private ProductType createProductType(String russianName, String englishName, String ukrainianName, String image, String background,  short visible){
         ProductType productType = new ProductType();
         ProductTypeName productNameEN = new ProductTypeName(englishName,  Locale.English, productType);
         ProductTypeName productNameRU = new ProductTypeName(russianName, Locale.Russian, productType);
@@ -91,6 +92,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
         productType.setProductTypeNames(new HashSet<>(Arrays.asList(productNameEN, productNameRU, productNameUA)));
         productType.setVisible(visible);
         productType.setImage(image);
+        productType.setBackground(background);
         productTypeRepository.save(productType);
         return productType;
     }
