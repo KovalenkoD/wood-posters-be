@@ -5,6 +5,7 @@ import com.woodposters.entity.category.Category;
 import com.woodposters.entity.material.Material;
 import com.woodposters.entity.product.Product;
 import com.woodposters.entity.product.ProductImage;
+import com.woodposters.entity.productColor.ProductColor;
 import com.woodposters.entity.technology.Technology;
 
 import java.util.*;
@@ -30,6 +31,7 @@ public class ProductConverter extends CommonConverter {
         convertMap.put("productType", ProductTypeConverter.convert(product.getProductType(), locale));
         convertMap.put("technologies", convertTechnologies(product.getTechnologies(), locale));
         convertMap.put("materials", convertMaterials(product.getMaterials(), locale));
+        convertMap.put("productColors", convertProductColor(product.getProductColors(), locale));
         convertMap.put("images", convertImages(product.getImages()));
         convertMap.put("imagePresentation", product.getImagePresentation());
         convertMap.put("background", product.getBackground());
@@ -55,6 +57,12 @@ public class ProductConverter extends CommonConverter {
         List<Map<String, Object>> materialConvertResult = new ArrayList<>();
         materials.forEach(material -> materialConvertResult.add(MaterialConverter.convert(material, locale)));
         return materialConvertResult;
+    }
+
+    public static List<Map<String, Object>> convertProductColor(Set<ProductColor> productColors, Locale locale){
+        List<Map<String, Object>> productColorConvertResult = new ArrayList<>();
+        productColors.forEach(productColor -> productColorConvertResult.add(ProductColorConverter.convert(productColor, locale)));
+        return productColorConvertResult;
     }
 
     public static List<String> convertImages(Set<ProductImage> images){
