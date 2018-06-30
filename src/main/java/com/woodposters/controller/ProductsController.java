@@ -92,6 +92,7 @@ public class ProductsController {
                 CommonConverter.convertCategoriesSetToIntIDs(product.getCategories()),
                 product.getProductType().getId(),
                 CommonConverter.convertMaterialsSetToIntIDs(product.getMaterials()),
+                CommonConverter.convertProductColorsSetToIntIDs(product.getProductColors()),
                 product.getPopular(),
                 product.getImagePresentation(),
                 CommonConverter.convertProductImagesToImages(product.getImages()),

@@ -2,6 +2,7 @@ package com.woodposters.entity.product;
 
 import com.woodposters.entity.category.Category;
 import com.woodposters.entity.material.Material;
+import com.woodposters.entity.productColor.ProductColor;
 import com.woodposters.entity.productType.ProductType;
 import com.woodposters.entity.technology.Technology;
 import org.hibernate.annotations.Cascade;
@@ -44,8 +45,9 @@ public class BundleProduct extends Product {
         this.bundleImage = bundleImage;
     }
 
-    public BundleProduct(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, String bundleImage, Set<Category> categories, ProductType productType, Set<Technology> technologies, Set<Material> materials) {
-        super(price, size, status, productNames, productDescriptions, categories, productType, technologies, materials);
+    public BundleProduct(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, String bundleImage, Set<Category> categories, ProductType productType, Set<Technology> technologies,
+                         Set<Material> materials, Set<ProductColor> productColors) {
+        super(price, size, status, productNames, productDescriptions, categories, productType, technologies, materials, productColors);
         this.bundleImage = bundleImage;
     }
 

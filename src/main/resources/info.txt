@@ -181,7 +181,29 @@ CREATE TABLE IF NOT EXISTS `product_material` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 
+CREATE TABLE IF NOT EXISTS `product_color` (
+  `product_color_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`product_color_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `product_color_name` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `product_color_id` int(11) unsigned NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `locale` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_color_id` (`product_color_id`),
+  CONSTRAINT `product_color_name_ibfk_1` FOREIGN KEY (`product_color_id`) REFERENCES `product_color` (`product_color_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `product_product_color` (
+ `product_id` int(11) unsigned NOT NULL,
+ `product_color_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`product_id`,`product_color_id`),
+  KEY `product_color_id` (`product_color_id`),
+  CONSTRAINT `product_product_color_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`),
+  CONSTRAINT `product_product_color_ibfk_2` FOREIGN KEY (`product_color_id`) REFERENCES `product_color` (`product_color_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 
 

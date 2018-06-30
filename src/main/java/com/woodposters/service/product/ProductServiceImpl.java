@@ -10,6 +10,8 @@ import com.woodposters.entity.category.CategoryName;
 import com.woodposters.entity.material.Material;
 import com.woodposters.entity.material.MaterialName;
 import com.woodposters.entity.product.*;
+import com.woodposters.entity.productColor.ProductColor;
+import com.woodposters.entity.productColor.ProductColorName;
 import com.woodposters.entity.productType.ProductType;
 import com.woodposters.entity.productType.ProductTypeName;
 import com.woodposters.entity.technology.Technology;
@@ -43,6 +45,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private MaterialRepository materialRepository;
 
+    @Autowired
+    private ProductColorRepository productColorRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -113,6 +117,26 @@ public class ProductServiceImpl implements ProductService {
         return material;
     }
 
+    private Set<ProductColor> createProductColor(){
+        Set<ProductColor> productColors = new HashSet<ProductColor>();
+        productColors.add(createProductColor("Зеленый", "Gren"));
+        productColors.add(createProductColor("Желтый", "Yellow"));
+        createMaterial("Дуб", "Oak");
+
+        ProductColor productColor= createProductColor("Синий", "Blue");
+        productColors.add(productColor);
+        return productColors;
+    }
+
+    private ProductColor createProductColor(String russianName, String englishName){
+        ProductColor productColor = new ProductColor();
+        ProductColorName materialNameEN = new ProductColorName(englishName,  Locale.English, productColor);
+        ProductColorName materialNameRU = new ProductColorName(russianName, Locale.Russian, productColor);
+        productColor.setProductColorNames(new HashSet<>(Arrays.asList(materialNameEN, materialNameRU)));
+        productColorRepository.save(productColor);
+        return productColor;
+    }
+
 
 
     private Set<Technology> createTechnologies(){
@@ -138,6 +162,7 @@ public class ProductServiceImpl implements ProductService {
         Category category = createCategory();
         Set<Technology> technologies = createTechnologies();
         Set<Material> materials = createMaterial();
+        Set<ProductColor> productColors = createProductColor();
 
        List<ProductType> productTypes = createType();
 
@@ -162,7 +187,7 @@ public class ProductServiceImpl implements ProductService {
             String name = posterNames.get(i);
             String image = posterImages.get(i);
 
-            createProduct(name + " RU", name + " EN", image, (short) 1, poster, currentDate, technologies, materials, category, (short) 1, null);
+            createProduct(name + " RU", name + " EN", image, (short) 1, poster, currentDate, technologies, materials, productColors, category, (short) 1, null);
         }
 
         Product product = null;
@@ -171,28 +196,30 @@ public class ProductServiceImpl implements ProductService {
                 String name = names.get(i);
                 for(String image : images){
                     if(i % 3 == 0){
-                        product = createProduct(name + " RU", name + " EN", image, (short) 1, productType1, currentDate, technologies, materials, category, (short) 0, posterImages);
+                        product = createProduct(name + " RU", name + " EN", image, (short) 1, productType1, currentDate, technologies, materials, productColors, category, (short) 0, posterImages);
                     } else if(i%2 == 0){
-                        product = createProduct(name + " RU", name + " EN", image, (short) 2, productType1, currentDate, technologies, materials, category, (short) 0, posterImages);
+                        product = createProduct(name + " RU", name + " EN", image, (short) 2, productType1, currentDate, technologies, materials, productColors, category, (short) 0, posterImages);
                     } else {
-                        product = createProduct(name + " NP RU", name + "NP EN", image, (short) 0, productType1, currentDate, technologies, materials, category, (short) 0, posterImages);
+                        product = createProduct(name + " NP RU", name + "NP EN", image, (short) 0, productType1, currentDate, technologies, materials, productColors, category, (short) 0, posterImages);
                     }
                     if(products.size() < 3){
                         products.add(product);
                     }
                 }
             }
-            createBundleProduct("Бандл продукт RU", "Bundle Product EN", "https://walldeco.ua/img/for_page/poster5.jpg", (short) 0, collection, currentDate, technologies, materials, category, products, (short) 2);
-            createBundleProduct("Бандл поп продукт RU", "Bundle POP Product EN", "https://walldeco.ua/img/for_page/poster5.jpg", (short) 1, collection, currentDate, technologies, materials, category, products, (short) 2);
+            createBundleProduct("Бандл продукт RU", "Bundle Product EN", "https://walldeco.ua/img/for_page/poster5.jpg", (short) 0, collection, currentDate, technologies, materials, productColors, category, products, (short) 2);
+            createBundleProduct("Бандл поп продукт RU", "Bundle POP Product EN", "https://walldeco.ua/img/for_page/poster5.jpg", (short) 1, collection, currentDate, technologies, materials, productColors, category, products, (short) 2);
 
         }
     }
 
-    private Product createProduct(String russianName, String englishName, String image, short popular, ProductType productType, Date currentDate, Set<Technology> technologies, Set<Material> materials, Category category, short imagePresentation, List<String> images){
+    private Product createProduct(String russianName, String englishName, String image, short popular, ProductType productType, Date currentDate, Set<Technology> technologies, Set<Material> materials,
+                                  Set<ProductColor> productColors, Category category, short imagePresentation, List<String> images){
         Product product = new Product();
         product.setPrice(250);
         product.setSize("145 x 145 x 70");
         product.setTechnologies(technologies);
+        product.setProductColors(productColors);
         ProductName productNameRU = new ProductName(russianName, Locale.Russian, product);
         ProductName productNameEN= new ProductName(englishName, Locale.English, product);
         product.setProductNames(new HashSet<>(Arrays.asList(productNameRU, productNameEN)));
@@ -219,11 +246,14 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
-    private void createBundleProduct(String russianName, String englishName, String image, short popular, ProductType productType, Date currentDate, Set<Technology> technologies, Set<Material> materials, Category category, List<Product> products, short imagePresentation){
+    private void createBundleProduct(String russianName, String englishName, String image, short popular, ProductType productType,
+                                     Date currentDate, Set<Technology> technologies, Set<Material> materials,
+                                     Set<ProductColor> productColors, Category category, List<Product> products, short imagePresentation){
         BundleProduct bundleProduct = new BundleProduct();
         bundleProduct.setPrice(250);
         bundleProduct.setSize("145 x 145 x 70");
         bundleProduct.setTechnologies(technologies);
+        bundleProduct.setProductColors(productColors);
         ProductName productNameRU = new ProductName(russianName, Locale.Russian, bundleProduct);
         ProductName productNameEN= new ProductName(englishName, Locale.English, bundleProduct);
         bundleProduct.setProductNames(new HashSet<>(Arrays.asList(productNameRU, productNameEN)));
@@ -265,6 +295,7 @@ public class ProductServiceImpl implements ProductService {
     public void createBundle(AdminProduct adminProduct) {
         Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));
         Set<Material> materials = Sets.newHashSet(materialRepository.findAll(adminProduct.getMaterialIDs()));
+        Set<ProductColor> productColors = Sets.newHashSet(productColorRepository.findAll(adminProduct.getProductColorIDs()));
         Set<Technology> technologies = Sets.newHashSet(technologyRepository.findAll(adminProduct.getTechnologyIDs()));
 
         ProductType productType = productTypeRepository.findOne(adminProduct.getProductTypeID());
@@ -272,7 +303,7 @@ public class ProductServiceImpl implements ProductService {
         BundleProduct bundleProduct = (BundleProduct) createProduct(adminProduct.getRussianName(), adminProduct.getEnglishName(), adminProduct.getUkrainianName(),
                 adminProduct.getPrice(), true, adminProduct.getSize(),technologies,
                 adminProduct.getRussianDescription(), adminProduct.getEnglishDescription(), adminProduct.getUkrainianDescription(),
-                categories, productType, materials, adminProduct.getPopular(),
+                categories, productType, materials, productColors, adminProduct.getPopular(),
                 adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage(), adminProduct.getBackground(), adminProduct.getArticul());
 
         bundleProduct.setBundleImage(adminProduct.getBundleImage());
@@ -347,13 +378,14 @@ public class ProductServiceImpl implements ProductService {
     public void createProduct(AdminProduct adminProduct) {
         Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));
         Set<Material> materials = Sets.newHashSet(materialRepository.findAll(adminProduct.getMaterialIDs()));
+        Set<ProductColor> productColors = Sets.newHashSet(productColorRepository.findAll(adminProduct.getProductColorIDs()));
         Set<Technology> technologies = Sets.newHashSet(technologyRepository.findAll(adminProduct.getTechnologyIDs()));
 
         ProductType productType = productTypeRepository.findOne(adminProduct.getProductTypeID());
         Product product = createProduct(adminProduct.getRussianName(), adminProduct.getEnglishName(), adminProduct.getUkrainianName(),
                 adminProduct.getPrice(), adminProduct.isBundle(), adminProduct.getSize(),technologies,
                 adminProduct.getRussianDescription(), adminProduct.getEnglishDescription(), adminProduct.getUkrainianDescription(),
-                categories, productType, materials, adminProduct.getPopular(),
+                categories, productType, materials, productColors, adminProduct.getPopular(),
                 adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage(),  adminProduct.getBackground(), adminProduct.getArticul());
         productRepository.save(product);
     }
@@ -361,8 +393,8 @@ public class ProductServiceImpl implements ProductService {
     private Product createProduct(String russianName, String englishName, String ukrainianName,
                                   double price, boolean isBundle, String size, Set<Technology> technologies,
                                   String russianDescription, String englishDescription, String ukrainianDescription,
-                                  Set<Category> categories, ProductType productType, Set<Material> materials, short popular,
-                                  short imagePresentation, Set<String> images, String image, String background, String articul){
+                                  Set<Category> categories, ProductType productType, Set<Material> materials, Set<ProductColor> productColors,
+                                  short popular, short imagePresentation, Set<String> images, String image, String background, String articul){
 
         Product product = isBundle ? new BundleProduct() : new Product();
         Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -376,6 +408,7 @@ public class ProductServiceImpl implements ProductService {
         product.setProductType(productType);
         product.setImagePresentation(imagePresentation);
         product.setMaterials(materials);
+        product.setProductColors(productColors);
         product.setCreatedDate(currentDate);
         product.setImage(image);
         product.setPopular(popular);
@@ -424,12 +457,15 @@ public class ProductServiceImpl implements ProductService {
 
         Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));
         Set<Material> materials = Sets.newHashSet(materialRepository.findAll(adminProduct.getMaterialIDs()));
+        Set<ProductColor> productColors = Sets.newHashSet(productColorRepository.findAll(adminProduct.getProductColorIDs()));
+
         Set<Technology> technologies = Sets.newHashSet(technologyRepository.findAll(adminProduct.getTechnologyIDs()));
         ProductType productType = productTypeRepository.findOne(adminProduct.getProductTypeID());
 
 
         product.setCategories(categories);
         product.setMaterials(materials);
+        product.setProductColors(productColors);
         product.setTechnologies(technologies);
         product.setProductType(productType);
 

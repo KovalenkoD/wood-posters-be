@@ -17,6 +17,7 @@ public class AdminProduct {
     private Set<Long> categoryIDs;
     private Long productTypeID;
     private Set<Long> materialIDs;
+    private Set<Long> productColorIDs;
     private short popular;
     private short imagePresentation;
     private Set<String> images;
@@ -28,54 +29,9 @@ public class AdminProduct {
 
     public AdminProduct(){}
 
-    public AdminProduct(long id, String russianName, String englishName, String ukrainianName, double price, boolean isBundle, String size, Set<Long> technologyIDs, String russianDescription, String englishDescription, String ukrainianDescription, Set<Long> categoryIDs, Long productTypeID, Set<Long> materialIDs, short popular, short imagePresentation, Set<String> images, String image, String bundleImage, Set<AdminBundleProductItem> bundleProductItems) {
-        this.id = id;
-        this.russianName = russianName;
-        this.englishName = englishName;
-        this.ukrainianName = ukrainianName;
-        this.price = price;
-        this.isBundle = isBundle;
-        this.size = size;
-        this.technologyIDs = technologyIDs;
-        this.russianDescription = russianDescription;
-        this.englishDescription = englishDescription;
-        this.ukrainianDescription = ukrainianDescription;
-        this.categoryIDs = categoryIDs;
-        this.productTypeID = productTypeID;
-        this.materialIDs = materialIDs;
-        this.popular = popular;
-        this.imagePresentation = imagePresentation;
-        this.images = images;
-        this.image = image;
-        this.bundleImage = bundleImage;
-        this.bundleProductItems = bundleProductItems;
-    }
-
-    public AdminProduct(long id, String russianName, String englishName, String ukrainianName, double price, boolean isBundle, String size, Set<Long> technologyIDs, String russianDescription, String englishDescription, String ukrainianDescription, Set<Long> categoryIDs, Long productTypeID, Set<Long> materialIDs, short popular, short imagePresentation, Set<String> images, String image, String bundleImage) {
-        this.id = id;
-        this.russianName = russianName;
-        this.englishName = englishName;
-        this.ukrainianName = ukrainianName;
-        this.price = price;
-        this.isBundle = isBundle;
-        this.size = size;
-        this.technologyIDs = technologyIDs;
-        this.russianDescription = russianDescription;
-        this.englishDescription = englishDescription;
-        this.ukrainianDescription = ukrainianDescription;
-        this.categoryIDs = categoryIDs;
-        this.productTypeID = productTypeID;
-        this.materialIDs = materialIDs;
-        this.popular = popular;
-        this.imagePresentation = imagePresentation;
-        this.images = images;
-        this.image = image;
-        this.bundleImage = bundleImage;
-    }
-
     public AdminProduct(long id, String russianName, String englishName, String ukrainianName, double price, boolean isBundle,
                         String size, Set<Long> technologyIDs, String russianDescription, String englishDescription, String ukrainianDescription,
-                        Set<Long> categoryIDs, Long productTypeID, Set<Long> materialIDs, short popular, short imagePresentation, Set<String> images,
+                        Set<Long> categoryIDs, Long productTypeID, Set<Long> materialIDs, Set<Long> productColorIDs, short popular, short imagePresentation, Set<String> images,
                         String image, String background, String articul) {
         this.id = id;
         this.russianName = russianName;
@@ -91,6 +47,7 @@ public class AdminProduct {
         this.categoryIDs = categoryIDs;
         this.productTypeID = productTypeID;
         this.materialIDs = materialIDs;
+        this.productColorIDs = productColorIDs;
         this.popular = popular;
         this.imagePresentation = imagePresentation;
         this.images = images;
@@ -273,5 +230,13 @@ public class AdminProduct {
 
     public void setBackground(String background) {
         this.background = background;
+    }
+
+    public Set<Long> getProductColorIDs() {
+        return productColorIDs;
+    }
+
+    public void setProductColorIDs(Set<Long> productColorIDs) {
+        this.productColorIDs = productColorIDs;
     }
 }

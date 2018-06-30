@@ -6,6 +6,7 @@ import com.woodposters.entity.LocaleName;
 import com.woodposters.entity.category.Category;
 import com.woodposters.entity.material.Material;
 import com.woodposters.entity.product.ProductImage;
+import com.woodposters.entity.productColor.ProductColor;
 import com.woodposters.entity.technology.Technology;
 
 import java.util.Collection;
@@ -47,6 +48,12 @@ public abstract class CommonConverter {
         Set<Long> materialsIDs = new HashSet<>();
         materials.forEach(material -> materialsIDs.add(material.getId()));
         return materialsIDs;
+    }
+
+    public static Set<Long> convertProductColorsSetToIntIDs(Set<ProductColor> productColors){
+        Set<Long> productColorsIDs = new HashSet<>();
+        productColors.forEach(productColor -> productColorsIDs.add(productColor.getId()));
+        return productColorsIDs;
     }
 
     public static Set<String> convertProductImagesToImages(Set<ProductImage> productImages){

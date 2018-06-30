@@ -3,6 +3,7 @@ package com.woodposters.entity.product;
 
 import com.woodposters.entity.category.Category;
 import com.woodposters.entity.material.Material;
+import com.woodposters.entity.productColor.ProductColor;
 import com.woodposters.entity.productType.ProductType;
 import com.woodposters.entity.technology.Technology;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
@@ -113,6 +114,14 @@ public class Product implements Serializable {
     )
     private Set<Material> materials;
 
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "product_product_color",
+            joinColumns = {@JoinColumn(name = "product_id")},
+            inverseJoinColumns = {@JoinColumn(name = "product_color_id")}
+    )
+    private Set<ProductColor> productColors;
+
     @Column(name="popular")
     private short popular;
 
@@ -122,7 +131,7 @@ public class Product implements Serializable {
 
     public Product(){}
 
-    public Product(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, Set<Category> categories, ProductType productType, Set<Technology> technologies, Set<Material> materials) {
+    public Product(double price, String size, short status, Set<ProductName> productNames, Set<ProductDescription> productDescriptions, Set<Category> categories, ProductType productType, Set<Technology> technologies, Set<Material> materials, Set<ProductColor> productColors) {
         this.price = price;
         this.status = status;
         this.productNames = productNames;
@@ -132,6 +141,7 @@ public class Product implements Serializable {
         this.size = size;
         this.technologies = technologies;
         this.materials = materials;
+        this.productColors = productColors;
     }
 
     public long getId() {
@@ -279,6 +289,14 @@ public class Product implements Serializable {
 
     public void setArticul(String articul) {
         this.articul = articul;
+    }
+
+    public Set<ProductColor> getProductColors() {
+        return productColors;
+    }
+
+    public void setProductColors(Set<ProductColor> productColors) {
+        this.productColors = productColors;
     }
 
     @Override
