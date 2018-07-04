@@ -7,6 +7,7 @@ import com.woodposters.entity.adminModel.AdminProduct;
 import com.woodposters.entity.adminModel.AdminProductType;
 import com.woodposters.entity.product.Product;
 import com.woodposters.entity.quote.Contact;
+import com.woodposters.entity.quote.DeliveryAddress;
 import com.woodposters.entity.quote.SalesOrder;
 import com.woodposters.entity.quote.SalesOrderIdAndStatus;
 import com.woodposters.repository.ProductRepository;
@@ -83,6 +84,10 @@ public class QuoteController {
         SalesOrder salesOrder = wizardState.getSalesOrder();
         contact.setSalesOrder(salesOrder);
         salesOrder.setContact(contact);
+
+        DeliveryAddress deliveryAddress = new DeliveryAddress();
+        deliveryAddress.setSalesOrder(salesOrder);
+        salesOrder.setDeliveryAddress(deliveryAddress);
         salesOrder.setStatus((short) 0);
         salesOrderService.submitSalesOrder(salesOrder);
         salesOrder = new SalesOrder();
