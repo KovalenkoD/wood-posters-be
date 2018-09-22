@@ -13,6 +13,30 @@ import java.util.stream.Stream;
 
 public class ProductConverter extends CommonConverter {
 
+    public static List<Map<String, Object>> lightConvert(Collection<? extends Product> products, Locale locale) {
+        return lightConvert(products.stream(), locale);
+    }
+
+    public static List<Map<String, Object>> lightConvert(Stream<? extends Product> products, Locale locale) {
+        List<Map<String, Object>> productsResult = new ArrayList<>();
+        products.forEach(product -> productsResult.add(lightConvert(product, locale)));
+        return productsResult;
+    }
+
+    public static Map<String, Object> lightConvert(Product product, Locale locale) {
+        Map<String, Object> convertMap = new HashMap<>();
+        convertMap.put("id", product.getId());
+        convertMap.put("price", product.getPrice());
+        convertMap.put("image", product.getImage());
+        convertMap.put("name", getStringFromLocaleNameObjects(product.getProductNames(), locale));
+        convertMap.put("categories", convertCategories(product.getCategories(), locale));
+        convertMap.put("technologies", convertTechnologies(product.getTechnologies(), locale));
+        convertMap.put("materials", convertMaterials(product.getMaterials(), locale));
+        convertMap.put("productColors", convertProductColor(product.getProductColors(), locale));
+        convertMap.put("background", product.getBackground());
+        return convertMap;
+    }
+
     public static List<Map<String, Object>> convert(Collection<? extends Product> products, Locale locale) {
         return convert(products.stream(),locale);
     }
