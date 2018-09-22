@@ -9,10 +9,15 @@ import com.woodposters.entity.productColor.ProductColor;
 import com.woodposters.entity.technology.Technology;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class ProductConverter extends CommonConverter {
 
     public static List<Map<String, Object>> convert(Collection<? extends Product> products, Locale locale) {
+        return convert(products.stream(),locale);
+    }
+
+    public static List<Map<String, Object>> convert(Stream<? extends Product> products, Locale locale) {
         List<Map<String, Object>> productsResult = new ArrayList<>();
         products.forEach(product -> productsResult.add(convert(product, locale)));
         return productsResult;

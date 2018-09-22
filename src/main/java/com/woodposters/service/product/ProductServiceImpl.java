@@ -25,6 +25,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.Date;
 import java.util.*;
+import java.util.stream.Stream;
 
 
 @Service
@@ -366,11 +367,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findRelatedProducts(long id) {
+    public Stream<Product> findRelatedProducts(long id) {
         Product product = productRepository.findOne(id);
+        Set<Category> productCategories = product.getCategories();
         List<Product> list = entityManager.createQuery("SELECT product FROM Product product WHERE product.productType.id=?")
                 .setParameter(1, product.getProductType().getId()).getResultList();
-        return list;
+        return list.stream().filter(productItem -> {
+            return productCategories.stream().anyMatch(productItem.getCategories()::contains);
+        });
     }
 
 

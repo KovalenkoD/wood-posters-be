@@ -5,7 +5,9 @@ import com.woodposters.entity.product.BundleProduct;
 import com.woodposters.entity.product.Product;
 import org.springframework.security.access.annotation.Secured;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public interface ProductService {
 
@@ -25,7 +27,7 @@ public interface ProductService {
 
     List<BundleProduct> getAllBundles();
 
-    List<Product> findRelatedProducts(long id);
+    Stream<Product> findRelatedProducts(long id);
 
     @Secured({"ROLE_ADMIN"})
     void createProduct(AdminProduct adminProduct);

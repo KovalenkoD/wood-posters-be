@@ -20,9 +20,11 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("products")
@@ -128,7 +130,7 @@ public class ProductsController {
 
     @GetMapping("getRelatedProducts/{id}")
     public ResponseEntity<List> getMostPopularProducts(@PathVariable("id") long id) {
-        List<Product> products = productService.findRelatedProducts(id);
+        Stream<Product> products = productService.findRelatedProducts(id);
         List result = ProductConverter.convert(products, wizardState.getLocale());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
