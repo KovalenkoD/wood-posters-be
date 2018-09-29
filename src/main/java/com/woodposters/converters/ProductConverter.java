@@ -26,14 +26,14 @@ public class ProductConverter extends CommonConverter {
     public static Map<String, Object> lightConvert(Product product, Locale locale) {
         Map<String, Object> convertMap = new HashMap<>();
         convertMap.put("id", product.getId());
-        convertMap.put("price", product.getPrice());
-        convertMap.put("image", product.getImage());
-        convertMap.put("name", getStringFromLocaleNameObjects(product.getProductNames(), locale));
-        convertMap.put("categories", convertCategories(product.getCategories(), locale));
-        convertMap.put("technologies", convertTechnologies(product.getTechnologies(), locale));
-        convertMap.put("materials", convertMaterials(product.getMaterials(), locale));
-        convertMap.put("productColors", convertProductColor(product.getProductColors(), locale));
-        convertMap.put("background", product.getBackground());
+        convertMap.put("pr", product.getPrice());
+        convertMap.put("ig", product.getImage());
+        convertMap.put("nm", getStringFromLocaleNameObjects(product.getProductNames(), locale));
+        convertMap.put("cg", convertCategories(product.getCategories(), locale));
+        convertMap.put("tg", convertTechnologies(product.getTechnologies(), locale));
+        convertMap.put("ml", convertMaterials(product.getMaterials(), locale));
+        convertMap.put("pc", convertProductColor(product.getProductColors(), locale));
+        convertMap.put("bg", product.getBackground());
         return convertMap;
     }
 
