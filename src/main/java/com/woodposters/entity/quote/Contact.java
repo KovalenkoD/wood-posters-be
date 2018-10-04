@@ -28,6 +28,9 @@ public class Contact {
     @Column(name="email")
     private String email;
 
+    @Column(name="delivery")
+    private String delivery;
+
     @ManyToOne
     @JoinColumn(name = "sales_order_id", nullable = false)
     @JsonIgnore
@@ -97,5 +100,13 @@ public class Contact {
 
     public void setSalesOrder(SalesOrder salesOrder) {
         this.salesOrder = salesOrder;
+    }
+
+    public String getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(String delivery) {
+        this.delivery = delivery;
     }
 }

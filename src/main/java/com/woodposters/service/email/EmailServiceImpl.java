@@ -32,25 +32,38 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public String notifyStoreAboutOrder(SalesOrder salesOrder, Contact contact) {
 
-        String mailConetnt = mailContentBuilder.build("TESSTT");
+        String mailConetnt = mailContentBuilder.build(salesOrder);
 
-        /*MimeMessagePreparator messagePreparator = mimeMessage -> {
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("woodposters.store@gmail.com");
-            messageHelper.setTo("woodposters.order@gmail.com");
-            messageHelper.setSubject("Sample mail subject");
+            messageHelper.setTo(contact.getEmail());
+            messageHelper.setSubject("Ваш заказ на woodposters");
             messageHelper.setText(mailConetnt, true);
         };
         try {
             mailSender.send(messagePreparator);
         } catch (MailException e) {
             e.printStackTrace();
-        }*/
+        }
         return mailConetnt;
     }
 
     @Override
     public void notifyCustomerAboutOrder(SalesOrder salesOrder, Contact contact) {
+        String mailConetnt = mailContentBuilder.buildForPosters(salesOrder, contact);
 
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setFrom("woodposters.store@gmail.com");
+            messageHelper.setTo("woodposters.order@gmail.com");
+            messageHelper.setSubject("Шо, опять?!");
+            messageHelper.setText(mailConetnt, true);
+        };
+        try {
+            mailSender.send(messagePreparator);
+        } catch (MailException e) {
+            e.printStackTrace();
+        }
     }
 }

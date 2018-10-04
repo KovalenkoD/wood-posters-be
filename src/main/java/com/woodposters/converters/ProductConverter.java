@@ -29,10 +29,10 @@ public class ProductConverter extends CommonConverter {
         convertMap.put("pr", product.getPrice());
         convertMap.put("ig", product.getImage());
         convertMap.put("nm", getStringFromLocaleNameObjects(product.getProductNames(), locale));
-        convertMap.put("cg", convertCategories(product.getCategories(), locale));
-        convertMap.put("tg", convertTechnologies(product.getTechnologies(), locale));
-        convertMap.put("ml", convertMaterials(product.getMaterials(), locale));
-        convertMap.put("pc", convertProductColor(product.getProductColors(), locale));
+        convertMap.put("cg", convertLightCategories(product.getCategories()));
+        convertMap.put("tg", convertLightTechnologies(product.getTechnologies()));
+        convertMap.put("ml", convertLightMaterials(product.getMaterials()));
+        convertMap.put("pc", convertLightProductColor(product.getProductColors()));
         convertMap.put("bg", product.getBackground());
         return convertMap;
     }
@@ -69,12 +69,23 @@ public class ProductConverter extends CommonConverter {
         return convertMap;
     }
 
+    public static List<Map<String, Object>> convertLightCategories(Set<Category> categories){
+        List<Map<String, Object>> categoryConvertResult = new ArrayList<>();
+        categories.forEach(category -> categoryConvertResult.add(CategoryConverter.convertLight(category)));
+        return categoryConvertResult;
+    }
+
     public static List<Map<String, Object>> convertCategories(Set<Category> categories, Locale locale){
         List<Map<String, Object>> categoryConvertResult = new ArrayList<>();
         categories.forEach(category -> categoryConvertResult.add(CategoryConverter.convert(category, locale)));
         return categoryConvertResult;
     }
 
+    public static List<Map<String, Object>> convertLightTechnologies(Set<Technology> technologies){
+        List<Map<String, Object>> technologyConvertResult = new ArrayList<>();
+        technologies.forEach(technology -> technologyConvertResult.add(TechnologyConverter.convertLight(technology)));
+        return technologyConvertResult;
+    }
 
     public static List<Map<String, Object>> convertTechnologies(Set<Technology> technologies, Locale locale){
         List<Map<String, Object>> technologyConvertResult = new ArrayList<>();
@@ -82,10 +93,22 @@ public class ProductConverter extends CommonConverter {
         return technologyConvertResult;
     }
 
+    public static List<Map<String, Object>> convertLightMaterials(Set<Material> materials){
+        List<Map<String, Object>> materialConvertResult = new ArrayList<>();
+        materials.forEach(material -> materialConvertResult.add(MaterialConverter.convertLight(material)));
+        return materialConvertResult;
+    }
+
     public static List<Map<String, Object>> convertMaterials(Set<Material> materials, Locale locale){
         List<Map<String, Object>> materialConvertResult = new ArrayList<>();
         materials.forEach(material -> materialConvertResult.add(MaterialConverter.convert(material, locale)));
         return materialConvertResult;
+    }
+
+    public static List<Map<String, Object>> convertLightProductColor(Set<ProductColor> productColors){
+        List<Map<String, Object>> productColorConvertResult = new ArrayList<>();
+        productColors.forEach(productColor -> productColorConvertResult.add(ProductColorConverter.convertLight(productColor)));
+        return productColorConvertResult;
     }
 
     public static List<Map<String, Object>> convertProductColor(Set<ProductColor> productColors, Locale locale){

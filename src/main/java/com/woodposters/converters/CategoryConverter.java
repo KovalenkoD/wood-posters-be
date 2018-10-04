@@ -15,4 +15,10 @@ public class CategoryConverter extends CommonConverter{
         convertMap.put("name", getStringFromLocaleNameObjects(category.getCategoryNames(), locale));
         return convertMap;
     }
+
+    public static Map<String, Object> convertLight(Category category) {
+        Map<String, Object> convertMap = new HashMap<>();
+        convertMap.put("id", category.getId());
+        return convertMap;
+    }
 }

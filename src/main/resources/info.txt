@@ -233,6 +233,8 @@ CREATE TABLE IF NOT EXISTS `contact` (
   CONSTRAINT `contact_mapping_ibfk_2` FOREIGN KEY (`sales_order_id`) REFERENCES `sales_order` (`sales_order_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
+ALTER TABLE `contact` ADD COLUMN delivery varchar(40) NULL;
+
 
 CREATE TABLE IF NOT EXISTS `delivery_address` (
   `delivery_address_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -259,3 +261,5 @@ CREATE TABLE IF NOT EXISTS `cart_item` (
   CONSTRAINT `cart_item_mapping_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
+ALTER TABLE `woodposters`.`contact`
+ADD COLUMN `delivery` VARCHAR(45) NULL DEFAULT NULL AFTER `sales_order_id`;

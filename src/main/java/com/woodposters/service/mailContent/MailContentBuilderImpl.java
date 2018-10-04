@@ -1,5 +1,9 @@
 package com.woodposters.service.mailContent;
 
+import com.woodposters.beans.Locale;
+import com.woodposters.converters.CommonConverter;
+import com.woodposters.entity.quote.Contact;
+import com.woodposters.entity.quote.SalesOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -16,32 +20,41 @@ public class MailContentBuilderImpl implements MailContentBuilder {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public String build(String message) {
+    public String build(SalesOrder salesOrder) {
         Context context = new Context();
         List<Map<String, Object>> orders = new ArrayList<>();
-        Map<String, Object> order1 = new HashMap<>();
-        order1.put("productName", "Супер постер");
-        order1.put("productCount", "3");
-        order1.put("totalPrice", "750 грн");
-        Map<String, Object> order2 = new HashMap<>();
-        order2.put("productName", "Супер постер 12");
-        order2.put("productCount", "3");
-        order2.put("totalPrice", "750 грн");
-        Map<String, Object> order4 = new HashMap<>();
-        order4.put("productName", "Супер постер 2");
-        order4.put("productCount", "2");
-        order4.put("totalPrice", "750 грн");
+        salesOrder.getCartItems().forEach(cartItem -> {
+            Map<String, Object> order = new HashMap<>();
+            order.put("productName", CommonConverter.getStringFromLocaleNameObjects(cartItem.getProduct().getProductNames(), Locale.Russian) + String.format(" в колличестве:%s едениц", cartItem.getCount()));
+            order.put("totalPrice", cartItem.calculatedPrice() + " грн");
+            orders.add(order);
+        });
 
-        orders.add(order1);
-        orders.add(order2);
-        orders.add(order4);
-
-
-        context.setVariable("message", message);
         context.setVariable("thankYou", "Спасибо за ваш заказ!");
         context.setVariable("orders", orders);
-        context.setVariable("weHope", "Мы надеемся, что наши товари принесут вам много радости и позитива! <br/> Номер вашего заказа: №123123");
+        context.setVariable("weHope", String.format("Мы надеемся, что наши товари принесут вам много радости и позитива! <br/> Номер вашего заказа: №%s. <br/>" +
+                "Вы можете связаться с нами по телефону +38-097-340-7233", salesOrder.getId()));
 
         return templateEngine.process("mailTemplate", context);
+    }
+
+    public String buildForPosters(SalesOrder salesOrder, Contact contact) {
+        Context context = new Context();
+        List<Map<String, Object>> orders = new ArrayList<>();
+        salesOrder.getCartItems().forEach(cartItem -> {
+            Map<String, Object> order = new HashMap<>();
+            order.put("productName", CommonConverter.getStringFromLocaleNameObjects(cartItem.getProduct().getProductNames(), Locale.Russian) + String.format(" в колличестве:%s едениц", cartItem.getCount()));
+            order.put("totalPrice", cartItem.calculatedPrice() + " грн");
+            orders.add(order);
+        });
+
+        context.setVariable("thankYou", "Типуля сделал заказ!");
+        context.setVariable("orders", orders);
+        context.setVariable("weHope", String.format("Хорошо бы позвонить ему по телефону! <br/> Номер заказа: №%s. Телефон типули %s. <br/>" +
+                "Типочка зовут %s" +
+                "<br/> Почта %s" +
+                "<br/> Почта %s", salesOrder.getId(), contact.getPhone(), contact.getFirstName() + " " + contact.getLastName(), contact.getEmail(), contact.getDelivery()));
+
+        return templateEngine.process("adminMailTemplate", context);
     }
 }

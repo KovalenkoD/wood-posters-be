@@ -11,6 +11,7 @@ import com.woodposters.entity.quote.DeliveryAddress;
 import com.woodposters.entity.quote.SalesOrder;
 import com.woodposters.entity.quote.SalesOrderIdAndStatus;
 import com.woodposters.repository.ProductRepository;
+import com.woodposters.service.email.EmailService;
 import com.woodposters.service.quote.SalesOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,9 @@ public class QuoteController {
 
     @Autowired
     private SalesOrderService salesOrderService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private WizardState wizardState;
@@ -92,6 +96,8 @@ public class QuoteController {
         salesOrderService.submitSalesOrder(salesOrder);
         salesOrder = new SalesOrder();
         wizardState.setSalesOrder(salesOrder);
+        emailService.notifyCustomerAboutOrder(salesOrder, contact);
+        emailService.notifyStoreAboutOrder(salesOrder, contact);
         Map result = SalesOrderConverter.convert(salesOrder, wizardState.getLocale());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

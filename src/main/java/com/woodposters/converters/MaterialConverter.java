@@ -14,4 +14,10 @@ public class MaterialConverter extends CommonConverter{
         convertMap.put("name", getStringFromLocaleNameObjects(material.getMaterialNames(), locale));
         return convertMap;
     }
+
+    public static Map<String, Object> convertLight(Material material) {
+        Map<String, Object> convertMap = new HashMap<>();
+        convertMap.put("id", material.getId());
+        return convertMap;
+    }
 }

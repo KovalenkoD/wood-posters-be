@@ -17,5 +17,11 @@ public class ProductColorConverter extends CommonConverter{
         convertMap.put("name", getStringFromLocaleNameObjects(productColor.getProductColorNames(), locale));
         return convertMap;
     }
+
+    public static Map<String, Object> convertLight(ProductColor productColor) {
+        Map<String, Object> convertMap = new HashMap<>();
+        convertMap.put("id", productColor.getId());
+        return convertMap;
+    }
 }
 
