@@ -93,11 +93,12 @@ public class QuoteController {
         deliveryAddress.setSalesOrder(salesOrder);
         salesOrder.setDeliveryAddress(deliveryAddress);
         salesOrder.setStatus((short) 0);
-        salesOrderService.submitSalesOrder(salesOrder);
-        salesOrder = new SalesOrder();
-        wizardState.setSalesOrder(salesOrder);
+        salesOrder = salesOrderService.submitSalesOrder(salesOrder);
         emailService.notifyCustomerAboutOrder(salesOrder, contact);
         emailService.notifyStoreAboutOrder(salesOrder, contact);
+        salesOrder = new SalesOrder();
+        wizardState.setSalesOrder(salesOrder);
+
         Map result = SalesOrderConverter.convert(salesOrder, wizardState.getLocale());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
