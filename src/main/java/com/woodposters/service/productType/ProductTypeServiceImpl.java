@@ -1,11 +1,15 @@
 package com.woodposters.service.productType;
 
 import com.woodposters.beans.Locale;
+import com.woodposters.converters.ProductConverter;
 import com.woodposters.entity.adminModel.AdminProductType;
+import com.woodposters.entity.product.Product;
 import com.woodposters.entity.productType.ProductType;
 import com.woodposters.entity.productType.ProductTypeName;
 import com.woodposters.repository.ProductTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -41,6 +45,15 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     @Override
     public ProductType findProductType(long id) {
         return productTypeRepository.findOne(id);
+    }
+
+    @Override
+    @Cacheable(value="products", key="#id.toString()+#locale")
+    public List getProductsByProductType(Long id, Locale locale) {
+        ProductType category = findProductType(id);
+        Set<Product> products = category.getProducts();
+        List result = ProductConverter.lightConvert(products, locale);
+        return result;
     }
 
     @Override

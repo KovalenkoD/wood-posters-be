@@ -43,10 +43,7 @@ public class ProductTypeController {
 
     @GetMapping("getProductsByProductType/{id}")
     public ResponseEntity<List> getProductsByProductType(@PathVariable("id") Long id) {
-        ProductType category = productTypeService.findProductType(id);
-        Set<Product> products = category.getProducts();
-        List result = ProductConverter.lightConvert(products, wizardState.getLocale());
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(productTypeService.getProductsByProductType(id, wizardState.getLocale()), HttpStatus.OK);
     }
 
 

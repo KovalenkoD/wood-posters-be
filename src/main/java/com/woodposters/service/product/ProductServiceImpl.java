@@ -2,6 +2,7 @@ package com.woodposters.service.product;
 
 import com.google.common.collect.Sets;
 import com.woodposters.beans.Locale;
+import com.woodposters.converters.ProductConverter;
 import com.woodposters.entity.adminModel.AdminBaseNameObject;
 import com.woodposters.entity.adminModel.AdminBundleProductItem;
 import com.woodposters.entity.adminModel.AdminProduct;
@@ -18,6 +19,9 @@ import com.woodposters.entity.technology.Technology;
 import com.woodposters.entity.technology.TechnologyName;
 import com.woodposters.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -158,6 +162,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CachePut(value = "products")
     public void addProducts() {
         Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         Category category = createCategory();
@@ -293,6 +298,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CachePut(value = "products")
     public void createBundle(AdminProduct adminProduct) {
         Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));
         Set<Material> materials = Sets.newHashSet(materialRepository.findAll(adminProduct.getMaterialIDs()));
@@ -329,6 +335,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(value = "products", key = "#id")
     public void deleteProduct(Long id) {
         productRepository.delete(id);
     }
@@ -367,6 +374,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Map getProductsByCategory(Long id, Locale locale) {
+        Product product = productRepository.findOne(id);
+        Map result = ProductConverter.convert(product, locale);
+        return result;
+    }
+
+    @Override
     public Stream<Product> findRelatedProducts(long id) {
         Product product = productRepository.findOne(id);
         Set<Category> productCategories = product.getCategories();
@@ -379,6 +393,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
+    @CachePut(value = "products")
     public void createProduct(AdminProduct adminProduct) {
         Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));
         Set<Material> materials = Sets.newHashSet(materialRepository.findAll(adminProduct.getMaterialIDs()));
@@ -444,6 +459,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CachePut(value = "products")
     public void updateProduct(AdminProduct adminProduct) {
         Product product = productRepository.findOne(adminProduct.getId());
         updateProductNames(product, adminProduct);

@@ -72,9 +72,8 @@ public class ProductsController {
 
     @GetMapping("getProductById/{id}")
     public ResponseEntity<Map> getProductsByCategory(@PathVariable("id") Long id) {
-        Product product = productRepository.findOne(id);
-        Map result = ProductConverter.convert(product, wizardState.getLocale());
-        return new ResponseEntity<>(result, HttpStatus.OK);
+
+        return new ResponseEntity<>(productService.getProductsByCategory(id, wizardState.getLocale()), HttpStatus.OK);
     }
 
     @GetMapping("getAdminProductById/{id}")
