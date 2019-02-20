@@ -24,7 +24,7 @@ import java.io.Serializable;
                                 params = {@org.hibernate.search.annotations.Parameter(name = "minGramSize", value = "3"),
                                         @org.hibernate.search.annotations.Parameter(name = "maxGramSize", value = "3")
                                 })
-                })
+                }),
         @AnalyzerDef(name = "russian",
                 tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
                 filters = {
