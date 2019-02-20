@@ -14,6 +14,7 @@ import com.woodposters.repository.ProductRepository;
 import com.woodposters.service.product.ProductService;
 import com.woodposters.service.search.ProductSearch;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -57,8 +58,8 @@ public class ProductsController {
     }
 
 
-    @GetMapping("searchProduct/{search}")
-    public ResponseEntity<List> getProductByFullSearchSearch(@PathVariable("search") String search) {
+    @PostMapping("searchProduct")
+    public ResponseEntity<List> getProductByFullSearchSearch(@RequestBody String search) {
         List<Product> searchResults = null;
         try {
             searchResults = productSearch.fullSearch(search);
