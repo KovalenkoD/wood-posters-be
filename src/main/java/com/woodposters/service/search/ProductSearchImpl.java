@@ -39,7 +39,7 @@ public class ProductSearchImpl implements  ProductSearch {
     @Override
     public List<Product> fullSearch(String searchTerm) {
 
-        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+  /*      FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Product.class).get();
 
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
@@ -52,20 +52,20 @@ public class ProductSearchImpl implements  ProductSearch {
 
         Query query = builder.build();
 
-        FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Product.class);
+        FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Product.class);*/
 
-        /*FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Product.class).get();
 
         PhraseTermination phraseTermination = queryBuilder.phrase().onField("productNames.name").sentence(searchTerm);
         Query luceneQuery = phraseTermination.createQuery();
-        FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Product.class);*/
+        FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Product.class);
 
         // execute search
 
         List<Product> articleList = null;
         try {
-            articleList = fullTextQuery.getResultList();
+            articleList = jpaQuery.getResultList();
         } catch (NoResultException nre) {
             System.out.println(nre);
 

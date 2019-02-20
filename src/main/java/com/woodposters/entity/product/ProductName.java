@@ -21,8 +21,8 @@ import java.io.Serializable;
                         @TokenFilterDef(factory = LowerCaseFilterFactory.class),
                         @TokenFilterDef(factory = RussianLightStemFilterFactory.class),
                         @TokenFilterDef(factory = NGramFilterFactory.class,
-                                params = {@org.hibernate.search.annotations.Parameter(name = "minGramSize", value = "3"),
-                                        @org.hibernate.search.annotations.Parameter(name = "maxGramSize", value = "3")
+                                params = {@org.hibernate.search.annotations.Parameter(name = "minGramSize", value = "4"),
+                                        @org.hibernate.search.annotations.Parameter(name = "maxGramSize", value = "4")
                                 })
                 }),
         @AnalyzerDef(name = "russianName",
@@ -40,7 +40,7 @@ public class ProductName implements LocaleName, Serializable {
     private long id;
 
     @Column(name="name")
-    @Field(analyzer=@Analyzer(definition="russianName"))
+    @Field(analyzer=@Analyzer(definition="treewordsname"))
     private String name;
 
     @Column(name="locale")
