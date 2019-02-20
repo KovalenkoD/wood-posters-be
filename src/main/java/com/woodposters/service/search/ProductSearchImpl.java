@@ -2,6 +2,7 @@ package com.woodposters.service.search;
 
 import com.woodposters.entity.product.Product;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -43,11 +44,11 @@ public class ProductSearchImpl implements  ProductSearch {
 
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
 
-        queryBuilder.keyword()
+        builder.add(queryBuilder.keyword()
                 .wildcard()
                 .onFields("productNames.name")
                 .matching(String.format("*%s*", StringUtils.lowerCase(searchTerm)))
-                .createQuery();
+                .createQuery(), BooleanClause.Occur.MUST);
 
         Query query = builder.build();
 

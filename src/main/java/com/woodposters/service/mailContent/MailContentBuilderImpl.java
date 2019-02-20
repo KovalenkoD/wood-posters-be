@@ -33,8 +33,8 @@ public class MailContentBuilderImpl implements MailContentBuilder {
         context.setVariable("thankYou", "Спасибо за ваш заказ!");
         context.setVariable("totalPrice", salesOrder.getFullPrice() + " грн");
         context.setVariable("orders", orders);
-        context.setVariable("weHope", String.format("Мы надеемся, что наши товари принесут вам много радости и позитива! <br/> Номер вашего заказа: №%s. <br/>" +
-                "Вы можете связаться с нами по телефону +38-097-340-7233", salesOrder.getId()));
+        context.setVariable("weHope", String.format("Мы надеемся, что наши товары принесут вам много радости и позитива! <br/> Номер вашего заказа: №%s. <br/>" +
+                "Вы можете связаться с нами по телефону +38 097 340 7233", salesOrder.getId()));
 
         return templateEngine.process("mailTemplate", context);
     }

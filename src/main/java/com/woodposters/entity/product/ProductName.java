@@ -25,7 +25,7 @@ import java.io.Serializable;
                                         @org.hibernate.search.annotations.Parameter(name = "maxGramSize", value = "3")
                                 })
                 }),
-        @AnalyzerDef(name = "russian",
+        @AnalyzerDef(name = "russianName",
                 tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
                 filters = {
                         @TokenFilterDef(factory = LowerCaseFilterFactory.class),
@@ -40,7 +40,7 @@ public class ProductName implements LocaleName, Serializable {
     private long id;
 
     @Column(name="name")
-    @Field(analyzer=@Analyzer(definition="russian"))
+    @Field(analyzer=@Analyzer(definition="russianName"))
     private String name;
 
     @Column(name="locale")
