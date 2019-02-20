@@ -162,7 +162,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @CachePut(value = "products")
+    @CacheEvict(cacheNames = "products", allEntries = true)
     public void addProducts() {
         Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         Category category = createCategory();
@@ -298,7 +298,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @CachePut(value = "products")
+    @CacheEvict(cacheNames = "products", allEntries = true)
     public void createBundle(AdminProduct adminProduct) {
         Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));
         Set<Material> materials = Sets.newHashSet(materialRepository.findAll(adminProduct.getMaterialIDs()));
@@ -335,7 +335,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @CacheEvict(value = "products", key = "#id")
+    @CacheEvict(cacheNames = "products", allEntries = true)
     public void deleteProduct(Long id) {
         productRepository.delete(id);
     }
@@ -393,7 +393,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    @CachePut(value = "products")
+    @CacheEvict(cacheNames = "products", allEntries = true)
     public void createProduct(AdminProduct adminProduct) {
         Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));
         Set<Material> materials = Sets.newHashSet(materialRepository.findAll(adminProduct.getMaterialIDs()));
@@ -459,7 +459,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @CachePut(value = "products")
+    @CacheEvict(cacheNames = "products", allEntries = true)
     public void updateProduct(AdminProduct adminProduct) {
         Product product = productRepository.findOne(adminProduct.getId());
         updateProductNames(product, adminProduct);

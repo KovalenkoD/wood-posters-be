@@ -43,7 +43,9 @@ public class ProductTypeController {
 
     @GetMapping("getProductsByProductType/{id}")
     public ResponseEntity<List> getProductsByProductType(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(productTypeService.getProductsByProductType(id, wizardState.getLocale()), HttpStatus.OK);
+        List products = productTypeService.getProductsByProductType(id, wizardState.getLocale());
+        Collections.shuffle(products);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
 
