@@ -24,7 +24,7 @@ import java.util.Set;
 @Entity
 @Table(name="product")
 @Indexed
-@AnalyzerDefs({
+/*@AnalyzerDefs({
 @AnalyzerDef(name = "treewords",
     tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
     filters = {
@@ -35,6 +35,14 @@ import java.util.Set;
                             @Parameter(name = "maxGramSize", value = "3")
                     })
     })
+})*/
+@AnalyzerDefs({
+        @AnalyzerDef(name = "russian",
+                tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+                filters = {
+                        @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+                        @TokenFilterDef(factory = RussianLightStemFilterFactory.class)
+                })
 })
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(

@@ -1,6 +1,8 @@
 package com.woodposters.service.search;
 
 import com.woodposters.entity.product.Product;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
@@ -39,15 +41,30 @@ public class ProductSearchImpl implements  ProductSearch {
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Product.class).get();
 
+        BooleanQuery.Builder builder = new BooleanQuery.Builder();
+
+        queryBuilder.keyword()
+                .wildcard()
+                .onFields("productNames.name")
+                .matching(String.format("*%s*", StringUtils.lowerCase(searchTerm)))
+                .createQuery();
+
+        Query query = builder.build();
+
+        FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Product.class);
+
+        /*FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Product.class).get();
+
         PhraseTermination phraseTermination = queryBuilder.phrase().onField("productNames.name").sentence(searchTerm);
         Query luceneQuery = phraseTermination.createQuery();
-        FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Product.class);
+        FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Product.class);*/
 
         // execute search
 
         List<Product> articleList = null;
         try {
-            articleList = jpaQuery.getResultList();
+            articleList = fullTextQuery.getResultList();
         } catch (NoResultException nre) {
             System.out.println(nre);
 
