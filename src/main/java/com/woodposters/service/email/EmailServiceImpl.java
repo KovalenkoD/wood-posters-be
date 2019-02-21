@@ -38,7 +38,7 @@ public class EmailServiceImpl implements EmailService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("woodposters.store@gmail.com");
             messageHelper.setTo(contact.getEmail());
-            messageHelper.setSubject("Ваш заказ на woodposters");
+            messageHelper.setSubject("Ваш заказ на WoodPosters");
             messageHelper.setText(mailConetnt, true);
         };
         try {
