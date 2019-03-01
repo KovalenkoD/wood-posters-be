@@ -20,9 +20,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.math.BigInteger;
+import java.util.*;
 
 @Controller
 @RequestMapping("quote")
@@ -39,6 +38,15 @@ public class QuoteController {
 
     @Autowired
     private WizardState wizardState;
+
+    private static Comparator<Map> salesOrderMapComparator = new Comparator<Map>() {
+        @Override
+        public int compare(Map o1, Map o2) {
+            Long o1Id = (Long) o1.get("id");
+            Long o2Id = (Long) o2.get("id");
+            return o2Id.compareTo(o1Id);
+        }
+    };
 
     @GetMapping("addOrdersToSalesOrder/{id}/{count}")
     public ResponseEntity<Map> addOrdersToSalesOrder(@PathVariable("id") Long id, @PathVariable("count") int count) {
@@ -107,12 +115,13 @@ public class QuoteController {
     @GetMapping("getSalesOrdersByStatus/{status}")
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<List> getSalesOrdersByStatus(@PathVariable("status") short status) {
-        List result = new ArrayList();
+        List<Map> result = new ArrayList();
         Iterable<SalesOrder> salesOrders = salesOrderService.getSalesOrderByStatus(status);
         salesOrders.forEach(salesOrder -> {
             salesOrder.setFullPrice(salesOrderService.recalculatePrice(salesOrder));
             result.add(SalesOrderConverter.convert(salesOrder, wizardState.getLocale()));
         });
+        result.sort(salesOrderMapComparator);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
