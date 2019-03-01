@@ -26,7 +26,7 @@ public class MailContentBuilderImpl implements MailContentBuilder {
         List<Map<String, Object>> orders = new ArrayList<>();
         salesOrder.getCartItems().forEach(cartItem -> {
             Map<String, Object> order = new HashMap<>();
-            order.put("productName", CommonConverter.getStringFromLocaleNameObjects(cartItem.getProduct().getProductNames(), Locale.Russian) + String.format(" в количестве: %s единиц", cartItem.getCount()));
+            order.put("productName", CommonConverter.getStringFromLocaleNameObjects(cartItem.getProduct().getProductNames(), Locale.Russian) + " (арт.: " + cartItem.getProduct().getArticul() + String.format(" в количестве: %s единиц", cartItem.getCount()));
             order.put("totalPrice", cartItem.calculatedPrice() + " грн");
             orders.add(order);
         });
