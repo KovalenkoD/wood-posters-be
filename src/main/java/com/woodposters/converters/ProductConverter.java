@@ -34,6 +34,7 @@ public class ProductConverter extends CommonConverter {
         convertMap.put("ml", convertLightMaterials(product.getMaterials()));
         convertMap.put("pc", convertLightProductColor(product.getProductColors()));
         convertMap.put("bg", product.getBackground());
+        convertMap.put("cd", product.getCreatedDate());
         return convertMap;
     }
 
@@ -65,6 +66,7 @@ public class ProductConverter extends CommonConverter {
         convertMap.put("imagePresentation", product.getImagePresentation());
         convertMap.put("background", product.getBackground());
         convertMap.put("articul", product.getArticul());
+        convertMap.put("createdDate", product.getCreatedDate());
 
         return convertMap;
     }
