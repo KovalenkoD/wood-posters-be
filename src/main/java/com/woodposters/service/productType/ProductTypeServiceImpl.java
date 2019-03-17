@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -52,6 +53,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     public List getProductsByProductType(Long id, Locale locale) {
         ProductType category = findProductType(id);
         Set<Product> products = category.getProducts();
+        products = products.stream().filter(product -> product.getVisible() == 1).collect(Collectors.toSet());
         List result = ProductConverter.lightConvert(products, locale);
         return result;
     }

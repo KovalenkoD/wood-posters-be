@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Controller
@@ -60,7 +61,7 @@ public class ProductsController {
         List<Product> searchResults = null;
         try {
             searchResults = productSearch.fullSearch(search);
-            System.out.println(wizardState.getLocale());
+            searchResults = searchResults.stream().filter(product -> product.getVisible() == 1).collect(Collectors.toList());
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -97,7 +98,8 @@ public class ProductsController {
                 CommonConverter.convertProductImagesToImages(product.getImages()),
                 product.getImage(),
                 product.getBackground(),
-                product.getArticul()
+                product.getArticul(),
+                product.getVisible()
                 );
         return new ResponseEntity<>(adminProduct, HttpStatus.OK);
 
@@ -107,6 +109,7 @@ public class ProductsController {
     @GetMapping("getMostPopularProducts/{discriminator}/{popular}")
     public ResponseEntity<List> getMostPopularProducts(@PathVariable("discriminator") String discriminator, @PathVariable("popular") short popular ) {
         List<Product> products = productService.getMostPopularProducts(discriminator, popular);
+        products = products.stream().filter(product -> product.getVisible() == 1).collect(Collectors.toList());
         List result = ProductConverter.convert(products, wizardState.getLocale());
         Collections.shuffle(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -129,6 +132,7 @@ public class ProductsController {
     @GetMapping("getRelatedProducts/{id}")
     public ResponseEntity<List> getMostPopularProducts(@PathVariable("id") long id) {
         Stream<Product> products = productService.findRelatedProducts(id);
+        products = products.filter(product -> product.getVisible() == 1);
         List result = ProductConverter.convert(products, wizardState.getLocale());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

@@ -26,13 +26,16 @@ public class AdminProduct {
     private String articul;
     private String bundleImage;
     private Set<AdminBundleProductItem> bundleProductItems;
+    private short visible;
+
 
     public AdminProduct(){}
 
     public AdminProduct(long id, String russianName, String englishName, String ukrainianName, double price, boolean isBundle,
                         String size, Set<Long> technologyIDs, String russianDescription, String englishDescription, String ukrainianDescription,
                         Set<Long> categoryIDs, Long productTypeID, Set<Long> materialIDs, Set<Long> productColorIDs, short popular, short imagePresentation, Set<String> images,
-                        String image, String background, String articul) {
+                        String image, String background, String articul, short visible
+    ) {
         this.id = id;
         this.russianName = russianName;
         this.englishName = englishName;
@@ -54,6 +57,7 @@ public class AdminProduct {
         this.image = image;
         this.background = background;
         this.articul = articul;
+        this.visible = visible;
     }
 
     public long getId() {
@@ -238,5 +242,13 @@ public class AdminProduct {
 
     public void setProductColorIDs(Set<Long> productColorIDs) {
         this.productColorIDs = productColorIDs;
+    }
+
+    public short getVisible() {
+        return visible;
+    }
+
+    public void setVisible(short visible) {
+        this.visible = visible;
     }
 }

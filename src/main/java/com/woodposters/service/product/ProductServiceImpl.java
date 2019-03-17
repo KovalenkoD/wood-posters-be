@@ -311,7 +311,7 @@ public class ProductServiceImpl implements ProductService {
                 adminProduct.getPrice(), true, adminProduct.getSize(),technologies,
                 adminProduct.getRussianDescription(), adminProduct.getEnglishDescription(), adminProduct.getUkrainianDescription(),
                 categories, productType, materials, productColors, adminProduct.getPopular(),
-                adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage(), adminProduct.getBackground(), adminProduct.getArticul());
+                adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage(), adminProduct.getBackground(), adminProduct.getArticul(), adminProduct.getVisible());
 
         bundleProduct.setBundleImage(adminProduct.getBundleImage());
 
@@ -405,7 +405,7 @@ public class ProductServiceImpl implements ProductService {
                 adminProduct.getPrice(), adminProduct.isBundle(), adminProduct.getSize(),technologies,
                 adminProduct.getRussianDescription(), adminProduct.getEnglishDescription(), adminProduct.getUkrainianDescription(),
                 categories, productType, materials, productColors, adminProduct.getPopular(),
-                adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage(),  adminProduct.getBackground(), adminProduct.getArticul());
+                adminProduct.getImagePresentation(), adminProduct.getImages(), adminProduct.getImage(),  adminProduct.getBackground(), adminProduct.getArticul(), adminProduct.getVisible());
         productRepository.save(product);
     }
 
@@ -413,7 +413,7 @@ public class ProductServiceImpl implements ProductService {
                                   double price, boolean isBundle, String size, Set<Technology> technologies,
                                   String russianDescription, String englishDescription, String ukrainianDescription,
                                   Set<Category> categories, ProductType productType, Set<Material> materials, Set<ProductColor> productColors,
-                                  short popular, short imagePresentation, Set<String> images, String image, String background, String articul){
+                                  short popular, short imagePresentation, Set<String> images, String image, String background, String articul, short visible){
 
         Product product = isBundle ? new BundleProduct() : new Product();
         Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -433,6 +433,7 @@ public class ProductServiceImpl implements ProductService {
         product.setPopular(popular);
         product.setArticul(articul);
         product.setBackground(background);
+        product.setVisible(visible);
 
         if(images != null){
             Set<ProductImage> productImages = new HashSet<>();
@@ -473,6 +474,8 @@ public class ProductServiceImpl implements ProductService {
 
         product.setArticul(adminProduct.getArticul());
         product.setBackground(adminProduct.getBackground());
+
+        product.setVisible(adminProduct.getVisible());
 
 
         Set<Category> categories = Sets.newHashSet(categoryRepository.findAll(adminProduct.getCategoryIDs()));

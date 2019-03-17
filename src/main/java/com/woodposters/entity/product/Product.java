@@ -77,6 +77,9 @@ public class Product implements Serializable {
     @Column(name="image_presentation")
     private short imagePresentation;
 
+    @Column(name="visible")
+    private short visible;
+
     @OneToMany(mappedBy="product")
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     @IndexedEmbedded
@@ -305,6 +308,14 @@ public class Product implements Serializable {
 
     public void setProductColors(Set<ProductColor> productColors) {
         this.productColors = productColors;
+    }
+
+    public short getVisible() {
+        return visible;
+    }
+
+    public void setVisible(short visible) {
+        this.visible = visible;
     }
 
     @Override
