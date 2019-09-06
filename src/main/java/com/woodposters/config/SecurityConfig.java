@@ -1,5 +1,8 @@
 package com.woodposters.config;
+import com.woodposters.config.listeners.SessionListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -27,5 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         auth.userDetailsService(myAppUserDetailsService).passwordEncoder(passwordEncoder);
+	}
+
+	@Bean
+	public ServletContextInitializer initializer() {
+		return servletContext -> servletContext.addListener(new SessionListener());
 	}
 }
